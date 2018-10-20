@@ -32,15 +32,16 @@ class Randomizer {
 	 *
 	 * @return void
 	 */
-	public function __construct($difficulty = 'normal', $logic = 'NoGlitches', $goal = 'ganon', $variation = 'none') {
+	public function __construct($difficulty = 'normal', $logic = 'NoGlitches', $goal = 'ganon', $variation = 'none', $sm_logic = 'Tournament') {
 		if ($logic === 'None') {
 			config(['alttp.region.forceSkullWoodsKey' => false]);
 		}
 		$this->difficulty = $difficulty;
 		$this->variation = $variation;
 		$this->logic = $logic;
+		$this->sm_logic = $sm_logic;
 		$this->goal = $goal;
-		$this->world = World::factory(config('alttp.mode.state'), $difficulty, $logic, $goal, $variation);
+		$this->world = World::factory(config('alttp.mode.state'), $difficulty, $logic, $goal, $variation, $sm_logic);
 		$this->seed = new Seed;
 		if($variation == "combo")
 		{
@@ -60,6 +61,10 @@ class Randomizer {
 			], $this->world);
 		}
 		$this->world->setPreCollectedItems($this->starting_equipment);
+	}
+
+	public function setMorph($string) {
+		$this->config['mode.morph'] = $string;
 	}
 
 	/**
@@ -218,6 +223,20 @@ class Randomizer {
 				continue;
 			}
 		}
+
+		// Morph-assured
+		if($this->config('mode.morph') == 'vanilla')
+		{
+			foreach($advancement_items as $key => $item)
+			{
+				if($item == Item::get('Morph'))
+				{
+					$this->world->getLocation('Morphing Ball')->setItem($item);
+					unset($advancement_items[$key]);
+				}
+			}
+		}
+
 		if ($this->config('mode.weapons') == 'swordless') {
 			// In swordless we need to catch all swords
 			foreach ($nice_items as $key => $item) {
@@ -732,11 +751,13 @@ class Randomizer {
 			'difficulty' => $this->difficulty,
 			'variation' => $this->variation,
 			'logic' => $this->getLogic(),
+			'sm_logic' => $this->getSMLogic(),
 			'rom_mode' => $this->config('rom.logicMode', $this->logic),
 			'goal' => $this->goal,
 			'build' => Rom::BUILD,
 			'mode' => $this->config('mode.state', 'standard'),
-			'weapons' => $this->config('mode.weapons', 'randomized')
+			'weapons' => $this->config('mode.weapons', 'randomized'),
+			'morph' => $this->config('mode.morph', 'randomized')
 		]);
 
 		$spoiler['Bosses'] = [
@@ -958,6 +979,8 @@ class Randomizer {
 			$rom->writeCredits();
 			$rom->writeText();
 		}
+
+		$rom->commitTextChanges();
 
 		$this->seed->patch = json_encode($rom->getWriteLog());
 		$this->seed->build = Rom::BUILD;

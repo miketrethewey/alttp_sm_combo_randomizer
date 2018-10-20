@@ -286,6 +286,7 @@ var ROM = (function(blob, loaded_callback) {
 				this.build = data.spoiler.meta.build;
 				this.goal = data.spoiler.meta.goal;
 				this.logic = data.spoiler.meta.logic;
+				this.sm_logic = data.spoiler.meta.sm_logic;
 				this.mode = data.spoiler.meta.mode;
 				this.name = data.spoiler.meta.name;
 				this.variation = data.spoiler.meta.variation;
@@ -340,10 +341,13 @@ var ROM = (function(blob, loaded_callback) {
 
 	this.downloadFilename = function() {
 		return this.name
-			|| 'sm_alttpr - total_VT_' + this.logic
+			|| 'SMALttP - '
+			+ this.sm_logic
+			+ '_' + this.logic
 			+ '_' + this.difficulty
 			+ '-' + this.mode
-			+ (this.weapons ? '_' + this.weapons : '')
+			+ (this.weapons ? '_swords-' + this.weapons : '')
+			+ (this.morph ? '_morph-' + this.morph : '')
 			+ '-' + this.goal
 			+ (this.variation == 'none' ? '' : '_' + this.variation)
 			+ '_' + this.hash

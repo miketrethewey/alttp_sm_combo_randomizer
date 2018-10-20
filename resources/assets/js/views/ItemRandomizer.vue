@@ -29,6 +29,10 @@
 							:rom="rom" :selected="choice.logic">{{ $t('randomizer.logic.title') }}</vt-select>
 						<div v-if="choice.logic.value != 'NoGlitches'" class="logic-warning text-danger text-right" v-html="$t('randomizer.logic.glitch_warning')" />
 					</div>
+					<div class="col-md mb-3">
+						<vt-select v-model="choice.sm_logic" id="sm_logic" :options="settings.sm_logics" storage-key="vt.sm_logic"
+							:rom="rom" :selected="choice.sm_logic">{{ $t('randomizer.sm_logic.title') }}</vt-select>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-md mb-3">
@@ -169,6 +173,7 @@ export default {
 		axios.get(`/randomizer/settings`).then(response => {
 			this.settings.mode.states = Object.keys(response.data.modes).map(key => { return {value: key, name: this.$i18n.t('randomizer.mode.options.' + key)}});
 			this.settings.logics = Object.keys(response.data.logics).map(key => { return {value: key, name: this.$i18n.t('randomizer.logic.options.' + key)}});
+			this.settings.sm_logics = Object.keys(response.data.sm_logics).map(key => { return {value: key, name: this.$i18n.t('randomizer.sm_logic.options.' + key)}});
 			this.settings.weapons = Object.keys(response.data.weapons).map(key => { return {value: key, name: this.$i18n.t('randomizer.weapons.options.' + key)}});
 			this.settings.goals = Object.keys(response.data.goals).map(key => { return {value: key, name: this.$i18n.t('randomizer.goal.options.' + key)}});
 			this.settings.difficulties = Object.keys(response.data.difficulties).map(key => { return {value: key, name: this.$i18n.t('randomizer.difficulty.options.' + key)}});

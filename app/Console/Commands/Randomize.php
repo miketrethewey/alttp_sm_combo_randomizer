@@ -22,6 +22,7 @@ class Randomize extends Command {
 		. ' {--difficulty=normal : set difficulty}'
 		. ' {--variation=none : set variation}'
 		. ' {--logic=NoGlitches : set logic}'
+		. ' {--sm-logic=Casual : set SM logic}'
 		. ' {--heartbeep=half : set heart beep speed}'
 		. ' {--skip-md5 : do not validate md5 of base rom}'
 		. ' {--tournament : enable tournament mode}'
@@ -33,7 +34,8 @@ class Randomize extends Command {
 		. ' {--sprite= : sprite file to change links graphics [zspr format]}'
 		. ' {--no-rom : no not generate output rom}'
 		. ' {--no-music : mute all music}'
-		. ' {--menu-speed=normal : menu speed}';
+		. ' {--menu-speed=normal : menu speed}'
+		. ' {--morph=randomized : \'vanilla\' for vanilla Morph Ball location}';
 
 	/**
 	 * The console command description.
@@ -101,17 +103,19 @@ class Randomize extends Command {
 			config([
 				'alttp.mode.state' => $this->option('state'),
 				'alttp.mode.weapons' => $this->option('weapons'),
+				'alttp.mode.morph' => $this->option('morph'),
 			]);
 
-			$rand = new Randomizer($this->option('difficulty'), $this->option('logic'), $this->option('goal'), $this->option('variation'));
+			$rand = new Randomizer($this->option('difficulty'), $this->option('logic'), $this->option('goal'), $this->option('variation'), $this->option('sm-logic'));
+			$rand->setMorph($this->option('morph'));
 			$rand->makeSeed($this->option('seed'));
 
 			$rand->writeToRom($rom);
 			$rom->muteMusic($this->option('no-music', false));
 			$rom->setMenuSpeed($this->option('menu-speed', 'normal'));
 
-			$output_file = sprintf($this->argument('output_directory') . '/' . 'sm_alttpr - total_VT_%s_%s-%s%s-%s%s_%s.sfc',
-				$rand->getLogic(), $this->option('difficulty'), $this->option('state'), $this->option('weapons') ? '_'
+			$output_file = sprintf($this->argument('output_directory') . '/' . 'sm_alttpr - total_VT_%s_%s_%s-%s%s-%s%s_%s.sfc',
+				$rand->getSMLogic(), $rand->getLogic(), $this->option('difficulty'), $this->option('state'), $this->option('weapons') ? '_'
 				. $this->option('weapons') : '', $this->option('goal'), $this->option('variation')=='none' ? '' : '_'
 				. $this->option('variation'), $hash);
 
@@ -137,8 +141,8 @@ class Randomize extends Command {
 				$this->info(sprintf('Rom Saved: %s', $output_file));
 			}
 			if ($this->option('spoiler')) {
-				$spoiler_file = sprintf($this->argument('output_directory') . '/' . 'sm_alttpr - total_VT_%s_%s-%s%s-%s%s_%s.txt',
-					$rand->getLogic(), $this->option('difficulty'), $this->option('state'), $this->option('weapons') ? '_'
+				$spoiler_file = sprintf($this->argument('output_directory') . '/' . 'sm_alttpr - total_VT_%s_%s_%s-%s%s-%s%s_%s.txt',
+					$rand->getSMLogic(), $rand->getLogic(), $this->option('difficulty'), $this->option('state'), $this->option('weapons') ? '_'
 					. $this->option('weapons') : '', $this->option('goal'), $this->option('variation')=='none' ? '' : '_'
 					. $this->option('variation'), $hash);
 

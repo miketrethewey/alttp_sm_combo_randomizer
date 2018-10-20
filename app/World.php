@@ -172,7 +172,7 @@ abstract class World {
 	 * @return static
 	 */
 	public function copy() {
-		$copy = new static($this->difficulty, $this->logic, $this->goal, $this->variation);
+		$copy = new static($this->difficulty, $this->logic, $this->goal, $this->variation, $this->sm_logic);
 		foreach ($this->locations as $name => $location) {
 			$copy->locations[$name]->setItem($location->getItem());
 		}
@@ -599,6 +599,14 @@ abstract class World {
 		} while ($found_items->count() > 0);
 
 		return $location_sphere;
+	}
+
+	public function getLogic() : string {
+		return $this->logic;
+	}
+
+	public function getSMLogic() : string {
+		return $this->sm_logic;
 	}
 
 	/**

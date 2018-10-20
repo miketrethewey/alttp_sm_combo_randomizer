@@ -26,7 +26,7 @@ class Region {
 	 *
 	 * @return void
 	 */
-	public function __construct(World $world) {
+	public function __construct(World $world, $game = 'ALTTP') {
 		$this->world = $world;
 		$this->shops = new ShopCollection;
 
@@ -61,6 +61,15 @@ class Region {
 	 */
 	public function getBoss() {
 		return $this->boss;
+	}
+
+	/**
+	 * Get the Game of this Region.
+	 *
+	 * @return string
+	 */
+	public function getGame() {
+		return $this->game;
 	}
 
 	/**
@@ -217,6 +226,13 @@ class Region {
 		return $this->initNoGlitches();
 	}
 
+	public function initTournament() {
+		return $this;
+	}
+
+	public function initCasual() {
+		return $this;
+	}
 
 	/**
 	 * Determine if the Region is completable given the locations and items available

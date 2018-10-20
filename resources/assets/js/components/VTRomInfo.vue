@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<div v-if="rom.logic">{{ $t('rom.info.logic') }}: {{ rom.logic }}</div>
+		<div v-if="rom.sm_logic">{{ $t('rom.info.sm_logic') }}: {{ rom.sm_logic }}</div>
 		<div v-if="rom.build">{{ $t('rom.info.build') }}: {{ rom.build }}</div>
 		<div v-if="rom.difficulty">
 			{{ $t('rom.info.difficulty') }}: {{ rom.difficulty }}
@@ -10,6 +11,7 @@
 		<div v-if="rom.shuffle">{{ $t('rom.info.shuffle') }}: {{ rom.shuffle }}</div>
 		<div v-if="rom.mode">{{ $t('rom.info.mode') }}: {{ rom.mode }}</div>
 		<div v-if="rom.weapons">{{ $t('rom.info.weapons') }}: {{ rom.weapons }}</div>
+		<div v-if="rom.morph">{{ $t('rom.info.morph') }}: {{ rom.morph }}</div>
 		<div v-if="rom.goal">{{ $t('rom.info.goal') }}: {{ rom.goal }}</div>
 		<div v-if="!noLink && rom.hash">{{ $t('rom.info.permalink') }}: <a :href="permalink">{{ permalink }}</a></div>
 		<div v-if="rom.special">{{ $t('rom.info.special') }}: {{ rom.special }}</div>

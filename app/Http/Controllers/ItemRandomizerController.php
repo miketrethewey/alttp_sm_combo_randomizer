@@ -51,8 +51,10 @@ class ItemRandomizerController extends Controller {
 		$variation = $request->input('variation', 'none') ?: 'none';
 		$goal = $request->input('goal', 'ganon') ?: 'ganon';
 		$logic = $request->input('logic', 'NoGlitches') ?: 'NoGlitches';
+		$sm_logic = $request->input('sm_logic', 'Tournament') ?: 'Tournament';
 		$game_mode = $request->input('mode', 'standard');
 		$weapons_mode = $request->input('weapons', 'randomized');
+		$morph_mode = $request->input('morph', 'randomized');
 		$enemizer = ($difficulty != 'custom') ? $request->input('enemizer', false) : false;
 		$spoilers = $request->input('spoilers', false);
 		$tournament = $request->filled('tournament') && $request->input('tournament') == 'true';
@@ -138,6 +140,7 @@ class ItemRandomizerController extends Controller {
 		config([
 			'alttp.mode.state' => $game_mode,
 			'alttp.mode.weapons' => $weapons_mode,
+			'alttp.mode.morph' => $morph_mode,
 		]);
 
 		$rom = new Rom(env('ENEMIZER_BASE', null));
@@ -175,7 +178,7 @@ class ItemRandomizerController extends Controller {
 
 		$seed_id = is_numeric($seed_id) ? $seed_id : abs(crc32($seed_id));
 
-		$rand = new Randomizer($difficulty, $logic, $goal, $variation);
+		$rand = new Randomizer($difficulty, $logic, $goal, $variation, $sm_logic);
 		if (isset($world)) {
 			$rand->setWorld($world);
 		}
