@@ -69,12 +69,20 @@ class Randomizer {
 	 */
 	public function getLogic() {
 		switch ($this->logic) {
-			case 'None': return 'none-' . static::LOGIC_COMBO . '-' . static::LOGIC;
-			case 'NoGlitches': return 'no-glitches-' . static::LOGIC_COMBO . '-' . static::LOGIC;
-			case 'OverworldGlitches': return 'overworld-glitches-' . static::LOGIC_COMBO . '-' . static::LOGIC;
-			case 'MajorGlitches': return 'major-glitches-' . static::LOGIC_COMBO . '-' . static::LOGIC;
+			case 'None': return 'alttp-none-v' . static::LOGIC;
+			case 'NoMajorGlitches': return 'alttp-no-glitches-v' . static::LOGIC;
+			case 'OverworldGlitches': return 'alttp-overworld-glitches-v' . static::LOGIC;
+			case 'MajorGlitches': return 'alttp-major-glitches-v' . static::LOGIC;
 		}
-		return 'unknown-' . static::LOGIC_COMBO . '-' . static::LOGIC;
+		return 'alttp-unknown-v' . static::LOGIC;
+	}
+	public function getSMLogic() {
+		switch ($this->sm_logic) {
+			case 'None': return 'sm-none';
+			case 'Tournament': return 'sm-hard';
+			case 'Casual': return 'sm-normal';
+		}
+		return 'sm-unknown';
 	}
 
 	/**
@@ -88,6 +96,14 @@ class Randomizer {
 			case 'NoGlitches': return 'No Glitches';
 			case 'OverworldGlitches': return 'Overworld Glitches';
 			case 'Glitched': return 'Major Glitches';
+		}
+		return 'Unknown';
+	}
+	public function getSMLogicNiceName() {
+		switch ($this->sm_logic) {
+			case 'None': return 'None';
+			case 'Tournament': return 'Hard';
+			case 'Casual': return 'Normal';
 		}
 		return 'Unknown';
 	}

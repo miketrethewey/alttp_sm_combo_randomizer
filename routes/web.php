@@ -8,11 +8,11 @@ Route::get('customizer/settings', 'SettingsController@customizer');
 
 Route::get('entrance/randomizer/settings', 'SettingsController@entrance');
 
-Route::any('entrance/seed/{seed_id?}', 'EntranceRandomizerController@generateSeed')->middleware('throttle:150,360');
+Route::any('entrance/seed/{seed_id?}', 'EntranceRandomizerController@generateSeed')->middleware('throttle:250,1');
 
 Route::get('randomizer/settings', 'SettingsController@item');
 
-Route::any('seed/{seed_id?}', 'ItemRandomizerController@generateSeed')->middleware('throttle:150,360');
+Route::any('seed/{seed_id?}', 'ItemRandomizerController@generateSeed')->middleware('throttle:250,1');
 
 Route::get('spoiler/{seed_id}', 'ItemRandomizerController@generateSpoiler');
 
