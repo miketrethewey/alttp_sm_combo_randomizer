@@ -192,7 +192,7 @@ class ItemRandomizerController extends Controller {
 		$spoiler = $rand->getSpoiler($spoiler_meta);
 
 		$hash = ($save) ? $rand->saveSeedRecord() : 'none';
-		$rom->setSeedString(str_pad(sprintf("VT %s", $hash), 21, ' '));
+		$rom->setSeedString(str_pad(sprintf("ZSM %s", $hash), 21, ' '));
 
 		if ($enemizer) {
 			$en = new Enemizer($rand, $patch, $enemizer);

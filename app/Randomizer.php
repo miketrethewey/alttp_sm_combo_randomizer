@@ -42,12 +42,23 @@ class Randomizer {
 		$this->goal = $goal;
 		$this->world = World::factory(config('alttp.mode.state'), $difficulty, $logic, $goal, $variation);
 		$this->seed = new Seed;
-		$this->starting_equipment = new ItemCollection([
-			Item::get('BombUpgrade10'),
-			Item::get('ArrowUpgrade10'),
-			Item::get('ArrowUpgrade10'),
-			Item::get('ArrowUpgrade10'),
-		], $this->world);
+		if($variation == "combo")
+		{
+			$this->starting_equipment = new ItemCollection([
+				Item::get('BombUpgrade10'),
+				Item::get('ArrowUpgrade10'),
+				Item::get('ArrowUpgrade10'),
+				Item::get('ArrowUpgrade10'),
+				Item::get('L1Sword'),
+			], $this->world);
+		} else {
+			$this->starting_equipment = new ItemCollection([
+				Item::get('BombUpgrade10'),
+				Item::get('ArrowUpgrade10'),
+				Item::get('ArrowUpgrade10'),
+				Item::get('ArrowUpgrade10'),
+			], $this->world);
+		}
 		$this->world->setPreCollectedItems($this->starting_equipment);
 	}
 
@@ -58,12 +69,12 @@ class Randomizer {
 	 */
 	public function getLogic() {
 		switch ($this->logic) {
-			case 'None': return 'none-' . static::LOGIC;
-			case 'NoGlitches': return 'no-glitches-' . static::LOGIC;
-			case 'OverworldGlitches': return 'overworld-glitches-' . static::LOGIC;
-			case 'MajorGlitches': return 'major-glitches-' . static::LOGIC;
+			case 'None': return 'none-' . static::LOGIC_COMBO . '-' . static::LOGIC;
+			case 'NoGlitches': return 'no-glitches-' . static::LOGIC_COMBO . '-' . static::LOGIC;
+			case 'OverworldGlitches': return 'overworld-glitches-' . static::LOGIC_COMBO . '-' . static::LOGIC;
+			case 'MajorGlitches': return 'major-glitches-' . static::LOGIC_COMBO . '-' . static::LOGIC;
 		}
-		return 'unknown-' . static::LOGIC;
+		return 'unknown-' . static::LOGIC_COMBO . '-' . static::LOGIC;
 	}
 
 	/**

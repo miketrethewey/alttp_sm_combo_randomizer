@@ -110,7 +110,7 @@ class Randomize extends Command {
 			$rom->muteMusic($this->option('no-music', false));
 			$rom->setMenuSpeed($this->option('menu-speed', 'normal'));
 
-			$output_file = sprintf($this->argument('output_directory') . '/' . 'ALttP - VT_%s_%s-%s%s-%s%s_%s.sfc',
+			$output_file = sprintf($this->argument('output_directory') . '/' . 'sm_alttpr - total_VT_%s_%s-%s%s-%s%s_%s.sfc',
 				$rand->getLogic(), $this->option('difficulty'), $this->option('state'), $this->option('weapons') ? '_'
 				. $this->option('weapons') : '', $this->option('goal'), $this->option('variation')=='none' ? '' : '_'
 				. $this->option('variation'), $hash);
@@ -137,7 +137,7 @@ class Randomize extends Command {
 				$this->info(sprintf('Rom Saved: %s', $output_file));
 			}
 			if ($this->option('spoiler')) {
-				$spoiler_file = sprintf($this->argument('output_directory') . '/' . 'ALttP - VT_%s_%s-%s%s-%s%s_%s.txt',
+				$spoiler_file = sprintf($this->argument('output_directory') . '/' . 'sm_alttpr - total_VT_%s_%s-%s%s-%s%s_%s.txt',
 					$rand->getLogic(), $this->option('difficulty'), $this->option('state'), $this->option('weapons') ? '_'
 					. $this->option('weapons') : '', $this->option('goal'), $this->option('variation')=='none' ? '' : '_'
 					. $this->option('variation'), $hash);
