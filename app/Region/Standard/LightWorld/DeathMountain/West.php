@@ -68,7 +68,8 @@ class West extends Region {
 		$this->can_enter = function($locations, $items) {
 			return $items->has('RescueZelda')
 				&& ($items->canFly()
-					|| ($items->canLiftRocks() && $items->has('Lamp', $this->world->config('item.require.Lamp', 1))));
+					|| ($items->canLiftRocks() && $items->has('Lamp', $this->world->config('item.require.Lamp', 1)))
+					|| $items->canAccessDeathMountainPortal());
 		};
 
 		return $this;

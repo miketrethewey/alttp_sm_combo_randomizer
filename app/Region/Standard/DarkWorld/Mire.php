@@ -73,7 +73,8 @@ class Mire extends Region {
 
 
 		$this->can_enter = function($locations, $items) {
-			return $items->has('RescueZelda') && $items->canFly() && $items->canLiftDarkRocks();
+			return $items->has('RescueZelda') &&
+				(($items->canFly() && $items->canLiftDarkRocks()) || $items->canAccessMiseryMirePortal());
 		};
 
 		return $this;
