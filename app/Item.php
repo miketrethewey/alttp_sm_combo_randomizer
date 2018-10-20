@@ -266,6 +266,29 @@ class Item {
 			new Item\Key('KeyD7', __('item.KeyD7'), [0xAC]),
 			new Item\Key('KeyA2', __('item.KeyA2'), [0xAD]),
 			new Item\Key('KeyGK', __('item.KeyGK'), [0xAF]),
+
+			new Item\SuperMetroid('Grapple', 'Grappling Beam', [0xB0], null, 0xef17, 0x54 + 0xef17, 0xa8 + 0xef17),
+			new Item\SuperMetroid('XRay', 'X-Ray Scope', [0xB1], null, 0xef0f, 0x54 + 0xef0f, 0xa8 + 0xef0f),
+			new Item\SuperMetroid('Varia', 'Varia Suit', [0xB2], null, 0xef07, 0x54 + 0xef07, 0xa8 + 0xef07),
+			new Item\SuperMetroid('SpringBall', 'Spring Ball', [0xB3], null, 0xef03, 0x54 + 0xef03, 0xa8 + 0xef03),
+			new Item\SuperMetroid('Morph', 'Morphing Ball', [0xB4], null, 0xef23, 0x54 + 0xef23, 0xa8 + 0xef23),
+			new Item\SuperMetroid('ScrewAttack', 'Screw Attack', [0xB5], null, 0xef1f, 0x54 + 0xef1f, 0xa8 + 0xef1f),
+			new Item\SuperMetroid('Gravity', 'Gravity Suit', [0xB6], null, 0xef0b, 0x54 + 0xef0b, 0xa8 + 0xef0b),
+			new Item\SuperMetroid('HiJump', 'Hi-Jump Boots', [0xB7], null, 0xeef3, 0x54 + 0xeef3, 0xa8 + 0xeef3),
+			new Item\SuperMetroid('SpaceJump', 'Space Jump', [0xB8], null, 0xef1b, 0x54 + 0xef1b, 0xa8 + 0xef1b),
+			new Item\SuperMetroid('Bombs', 'Bombs', [0xB9], null, 0xeee7, 0x54 + 0xeee7, 0xa8 + 0xeee7),
+			new Item\SuperMetroid('SpeedBooster', 'Speed Booster', [0xBA], null, 0xeef7, 0x54 + 0xeef7, 0xa8 + 0xeef7),
+			new Item\SuperMetroid('ChargeBeam', 'Charge Beam', [0xBB], null, 0xeeeb, 0x54 + 0xeeeb, 0xa8 + 0xeeeb),
+			new Item\SuperMetroid('IceBeam', 'Ice Beam', [0xBC], null, 0xeeef, 0x54 + 0xeeef, 0xa8 + 0xeeef),
+			new Item\SuperMetroid('WaveBeam', 'Wave Beam', [0xBD], null, 0xeefb, 0x54 + 0xeefb, 0xa8 + 0xeefb),
+			new Item\SuperMetroid('Spazer', 'Spazer', [0xBE], null, 0xeeff, 0x54 + 0xeeff, 0xa8 + 0xeeff),
+			new Item\SuperMetroid('Plasma', 'Plasma Beam', [0xBF], null, 0xef13, 0x54 + 0xef13, 0xa8 + 0xef13),
+			new Item\SuperMetroid('ETank', 'Energy Tank', [0xC0], null, 0xeed7, 0x54 + 0xeed7, 0xa8 + 0xeed7),
+			new Item\SuperMetroid('ReserveTank', 'Reserve Tank', [0xC1], null, 0xef27, 0x54 + 0xef27, 0xa8 + 0xef27),
+			new Item\SuperMetroid('Missile', 'Missile', [0xC2], null, 0xeedb, 0x54 + 0xeedb, 0xa8 + 0xeedb),
+			new Item\SuperMetroid('Super', 'Super Missile', [0xC3], null, 0xeedf, 0x54 + 0xeedf, 0xa8 + 0xeedf),
+			new Item\SuperMetroid('PowerBomb', 'Power Bomb', [0xC4], null, 0xeee3, 0x54 + 0xeee3, 0xa8 + 0xeee3),
+
 			new Item\Crystal('Crystal1', __('item.Crystal1'), [null, 0x02, 0x34, 0x64, 0x40, 0x7F, 0x06]),
 			new Item\Crystal('Crystal2', __('item.Crystal2'), [null, 0x10, 0x34, 0x64, 0x40, 0x79, 0x06]),
 			new Item\Crystal('Crystal3', __('item.Crystal3'), [null, 0x40, 0x34, 0x64, 0x40, 0x6C, 0x06]),
@@ -278,6 +301,12 @@ class Item {
 			new Item\Event('BigRedBomb', __('item.BigRedBomb'), [null]),
 			new Item\Event('DefeatAgahnim2', __('item.DefeatAgahnim2'), [null]),
 			new Item\Event('DefeatGanon', __('item.DefeatGanon'), [null]),
+
+			new Item\Event('DefeatPhantoon', 'Defeat Phantoon', [null]),
+			new Item\Event('DefeatKraid', 'Defeat Kraid', [null]),
+			new Item\Event('DefeatDraygon', 'Defeat Draygon', [null]),
+			new Item\Event('DefeatRidley', 'Defeat Ridley', [null]),
+			new Item\Event('DefeatMotherBrain', 'Defeat Mother Brain', [null]),
 		]);
 
 		// Logical aliases
