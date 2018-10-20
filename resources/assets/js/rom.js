@@ -340,7 +340,7 @@ var ROM = (function(blob, loaded_callback) {
 
 	this.downloadFilename = function() {
 		return this.name
-			|| 'ALttP - VT_' + this.logic
+			|| 'sm_alttpr - total_VT_' + this.logic
 			+ '_' + this.difficulty
 			+ '-' + this.mode
 			+ (this.weapons ? '_' + this.weapons : '')

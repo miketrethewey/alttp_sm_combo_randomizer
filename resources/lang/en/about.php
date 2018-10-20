@@ -1,7 +1,9 @@
 <?php
 return [
 	'content' => [
-		'<span class="font-weight-bold">ALttP: Randomizer</span> is a new take on the classic game The Legend of Zelda: A Link to the Past. Each playthrough shuffles the location of all the important items in the game. Will you find the Bow atop Death Mountain, the Fire Rod resting silently in the library, or even the Master Sword itself waiting in a chicken coop?',
-		'Challenge your friends to get the fastest time on a particular shuffle or take part in the <a href="/en/races">weekly speedrun competition</a>. Hone your skills enough and maybe you’ll take home the crown in our <a href="/en/races">twice-yearly invitational tournament</a>. See you in Hyrule!',
+		'<h4>Welcome to the Super Metroid and A Link to the Past crossover item randomizer.</h4>',
+		'This randomizer mixes Super Metroid and A Link to the Past together into one experience and will randomize both games items to any location in either game creating a new kind of multi-game challenge. The goal is to kill both Ganon and Mother Brain and then finish either game.',
+		'Travel between the two games can be done by using certain doors and entrances in either game, a list of them can be found <a href="https://smalttplinks.page.link/NLtk">here</a>.',
+		'<a href="https://discord.gg/PMKcDPQ">Join our Discord server!</a>'
 	],
 ];

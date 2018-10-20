@@ -8,19 +8,19 @@
 		</button>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item{!! (request()->path() == 'start') ? ' active' : '' !!}"><a class="nav-link" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/start">{{ __('navigation.start_playing') }}</a></li>
-				<li class="nav-item{!! (request()->path() == 'watch') ? ' active' : '' !!}"><a class="nav-link" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/watch">{{ __('navigation.start_watching') }}</a></li>
+<!--				<li class="nav-item{!! (request()->path() == 'start') ? ' active' : '' !!}"><a class="nav-link" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/start">{{ __('navigation.start_playing') }}</a></li>
+				<li class="nav-item{!! (request()->path() == 'watch') ? ' active' : '' !!}"><a class="nav-link" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/watch">{{ __('navigation.start_watching') }}</a></li> -->
 				<li class="nav-item dropdown{!! (in_array(request()->path(), ['randomizer', 'entrance/randomizer', 'daily', 'customizer'])) ? ' active' : '' !!}">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ __('navigation.generate') }}<span class="caret"></span></a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item{!! (in_array(request()->path(), ['randomizer', 'entrance/randomizer'])) ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/randomizer">{{ __('navigation.randomizer') }}</a>
-						<a class="dropdown-item{!! (in_array(request()->path(), ['daily'])) ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/daily">{{ __('navigation.daily') }}</a>
-						<a class="dropdown-item{!! (in_array(request()->path(), ['customizer'])) ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/customizer">{{ __('navigation.customizer') }}</a>
+<!--						<a class="dropdown-item{!! (in_array(request()->path(), ['daily'])) ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/daily">{{ __('navigation.daily') }}</a>
+						<a class="dropdown-item{!! (in_array(request()->path(), ['customizer'])) ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/customizer">{{ __('navigation.customizer') }}</a> -->
 					</div>
 				</li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
-				<Streams></Streams>
+<!--				<Streams></Streams> -->
 				<li class="nav-item dropdown">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{!! __('navigation.language') !!} <span class="caret"></span></a>
 					<div class="dropdown-menu">
@@ -33,15 +33,15 @@
 				<li class="nav-item dropdown">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ __('navigation.help') }} <span class="caret"></span></a>
 					<div class="dropdown-menu">
-						<a class="dropdown-item{!! (request()->path() == 'resources') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/resources">{{ __('navigation.resources') }}</a>
+<!--						<a class="dropdown-item{!! (request()->path() == 'resources') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/resources">{{ __('navigation.resources') }}</a>
 						<a class="dropdown-item{!! (request()->path() == 'options') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/options">{{ __('navigation.options') }}</a>
-						<a class="dropdown-item{!! (request()->path() == 'races') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/races">{{ __('navigation.races') }}</a>
+						<a class="dropdown-item{!! (request()->path() == 'races') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/races">{{ __('navigation.races') }}</a> -->
 						<a class="dropdown-item{!! (request()->path() == 'updates') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/updates">{{ __('navigation.updates') }}</a>
-						<a class="dropdown-item{!! (request()->path() == 'game_entrance') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/game_entrance">{{ __('navigation.game_entrance') }}</a>
+<!--						<a class="dropdown-item{!! (request()->path() == 'game_entrance') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/game_entrance">{{ __('navigation.game_entrance') }}</a>
 						<a class="dropdown-item{!! (request()->path() == 'game_enemizer') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/game_enemizer">{{ __('navigation.game_enemizer') }}</a>
-						<a class="dropdown-item{!! (request()->path() == 'contribute') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/contribute">{{ __('navigation.contribute') }}</a>
-						<a class="dropdown-item" href="https://discord.gg/alttprandomizer" target="_blank" rel="noopener noreferrer">{{ __('navigation.discord') }}</a>
-						<a class="dropdown-item" href="https://github.com/sporchia/alttp_vt_randomizer/issues/new" target="_blank" rel="noopener noreferrer">{{ __('navigation.report_issue') }}</a>
+						<a class="dropdown-item{!! (request()->path() == 'contribute') ? ' active' : '' !!}" href="{{ app()->isLocale('en') ? '' : '/' . app()->getLocale() }}/contribute">{{ __('navigation.contribute') }}</a> -->
+						<a class="dropdown-item" href="https://discord.gg/PMKcDPQ" target="_blank" rel="noopener noreferrer">{{ __('navigation.discord') }}</a>
+						<a class="dropdown-item" href="https://github.com/tewtal/alttp_sm_combo_randomizer/issues/new" target="_blank" rel="noopener noreferrer">{{ __('navigation.report_issue') }}</a>
 					</div>
 				</li>
 			</ul>
