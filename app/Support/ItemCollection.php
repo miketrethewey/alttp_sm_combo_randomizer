@@ -348,6 +348,26 @@ class ItemCollection extends Collection {
 		return $count;
 	}
 
+	public function canActivateMedallions()
+	{
+		return $this->hasSword() || ($this->world->config('mode.weapons') == 'swordless' && $this->has('Hammer'));
+	}
+
+	public function canActivateTablets()
+	{
+		return $this->canRead() && ($this->hasSword(2) || ($this->world->config('mode.weapons') == 'swordless' && $this->has('Hammer')));
+	}
+
+	public function canDash()
+	{
+		return $this->has('PegasusBoots');
+	}
+
+	public function canGrapple()
+	{
+		return $this->has('Hookshot');
+	}
+
 	/**
 	 * Requirements for lifting rocks
 	 *
@@ -402,14 +422,19 @@ class ItemCollection extends Collection {
 		return $this->has('OcarinaActive') || $this->has('OcarinaInactive');
 	}
 
+	public function canRead()
+	{
+		return $this->has('BookOfMudora');
+	}
+
 	/**
 	 * Requirements for fast travel through the spin/hook speed
 	 *
 	 * @return bool
 	 */
 	public function canSpinSpeed() {
-		return $this->has('PegasusBoots')
-			&& ($this->hasSword() || $this->has('Hookshot'));
+		return $this->canDash()
+			&& ($this->hasSword() || $this->canGrapple());
 	}
 
 	/**
@@ -433,6 +458,11 @@ class ItemCollection extends Collection {
 					|| $this->has('BowAndSilverArrows');
 		}
 
+	}
+
+	public function canSwim()
+	{
+		return $this->has('Flippers');
 	}
 
 	/**
@@ -499,7 +529,7 @@ class ItemCollection extends Collection {
 	public function canGetGoodBee() {
 		return $this->has('BugCatchingNet')
 			&& $this->hasABottle()
-			&& ($this->has('PegasusBoots')
+			&& ($this->canDash()
 				|| ($this->hasSword() && $this->has('Quake')));
 	}
 
@@ -582,8 +612,8 @@ class ItemCollection extends Collection {
 
 	public function canAccessDeathMountainPortal()
 	{
-		return (($this->canDestroyBombWalls() || $this->has('SpeedBooster'))
-		&& ($this->has('Super') && $this->has('Morph')));
+		return (($this->canDestroyBombWalls() || $this->canDashSM())
+		&& ($this->canOpenGreenDoors() && $this->canMorph()));
 	}
 	public function canAccessMiseryMirePortal()
 	{
@@ -591,14 +621,14 @@ class ItemCollection extends Collection {
 		{
 			case 'Casual':
 				return $this->heatProof()
-					&& $this->has('Super')
+					&& $this->canOpenGreenDoors()
 					&& $this->canUsePowerBombs()
-					&& ($this->has('Gravity') && $this->has('SpaceJump'));
+					&& ($this->canSwimSM() && $this->has('SpaceJump'));
 			case 'Tournament':
 			default:
 				return $this->heatProof()
-					&& $this->has('Super')
-					&& ($this->has('HiJump') || $this->has('Gravity'))
+					&& $this->canOpenGreenDoors()
+					&& ($this->canHiJump() || $this->canSwimSM())
 					&& $this->canUsePowerBombs();
 		}
 	}
@@ -607,19 +637,24 @@ class ItemCollection extends Collection {
 		switch($this->world->getSMLogic())
 		{
 			case 'Casual':
-				return $this->canUsePowerBombs() && $this->has('Super') && $this->has('Gravity') && $this->has('SpeedBooster');
+				return $this->canUsePowerBombs() && $this->canOpenGreenDoors() && $this->canSwimSM() && $this->canDashSM();
 			case 'Tournament':
 			default:
 				return $this->canUsePowerBombs()
-					&& $this->has('Super')
+					&& $this->canOpenGreenDoors()
 					&& ($this->has('Charge') || ($this->has('Super') && $this->has('Missile')))
-					&& ($this->has('Gravity') || ($this->has('HiJump') && $this->has('Ice') && $this->has('Grapple')))
-					&& ($this->has('Ice') || ($this->has('SpeedBooster') && $this->has('Gravity')));
+					&& ($this->canSwimSM() || ($this->canHiJump() && $this->has('Ice') && $this->canGrappleSM()))
+					&& ($this->has('Ice') || ($this->canDashSM() && $this->canSwimSM()));
 		}
 	}
+
 	/* Super Metroid Ability Macros */
+	public function canBombThingsSM()
+	{
+		return $this->canUseMorphBombs() || $this->canUsePowerBombs();
+	}
 	public function canIbj() {
-		return $this->has('Morph') && $this->has('Bombs');
+		return $this->canUseMorphBombs();
 	}
 	public function canFlySM() {
 		return $this->canIbj() || $this->has('SpaceJump');
@@ -629,13 +664,21 @@ class ItemCollection extends Collection {
 		return $this->has('Missile', 2)
 			&& $this->has('Super', 2)
 			&& $this->has('PowerBomb', 3)
-			&& $this->has('Morph');
+			&& $this->canMorph();
 	}
 	// Not having morph in logic for Crystal flash could create a very crazy edge-case where CF is needed in Norfair,
 	// but Morph is in Bubble Mountain for example, and the game only gave you 2 tanks for the heat run.
 	public function hasEnergyReserves(int $amount = 0)
 	{
 		return (($this->countItem('ETank') + $this->countItem('ReserveTank')) >= $amount);
+	}
+	public function canDashSM()
+	{
+		return $this->has('SpeedBooster');
+	}
+	public function canGrappleSM()
+	{
+		return $this->has('Grapple');
 	}
 	public function heatProof()
 	{
@@ -645,39 +688,61 @@ class ItemCollection extends Collection {
 	{
 		return $this->heatProof() || $this->hasEnergyReserves(5);
 	}
+	public function canHiJump()
+	{
+		return $this->has('HiJump');
+	}
+	public function canMorph()
+	{
+		return $this->has('Morph');
+	}
+	public function canUseMorphBombs()
+	{
+		return $this->canMorph() && $this->has('Bombs');
+	}
 	public function canUsePowerBombs()
 	{
-		return $this->has('Morph') && $this->has('PowerBomb');
+		return $this->canMorph() && $this->has('PowerBomb');
+	}
+	public function canOpenGreenDoors()
+	{
+		return $this->has('Super');
 	}
 	public function canOpenRedDoors()
 	{
-		return $this->has('Missile') || $this->has('Super');
+		return $this->has('Missile') || $this->canOpenGreenDoors();
+	}
+	public function canOpenYellowDoors()
+	{
+		return $this->canUsePowerBombs();
 	}
 	public function canDestroyBombWalls()
 	{
-		return ($this->has('Morph')
-				&&	($this->has('Bombs')
-					|| $this->has('PowerBomb')))
+		return ($this->canUseMorphBombs() || $this->canUsePowerBombs())
 			|| $this->has('ScrewAttack');
 	}
 	public function canSpringBallJump()
 	{
-		return $this->has('Morph') && $this->has('SpringBall');
+		return $this->canMorph() && $this->has('SpringBall');
+	}
+	public function canSwimSM()
+	{
+		return $this->has('Gravity');
 	}
 	public function canEnterAndLeaveGauntlet()
 	{
 		switch($this->world->getSMLogic())
 		{
 			case 'Casual':
-				return ($this->has('Morph') && ($this->canFlySM() || $this->has('SpeedBooster')))
+				return ($this->canMorph() && ($this->canFlySM() || $this->canDashSM()))
 					&& ($this->canIbj()
 						|| ($this->canUsePowerBombs() && $this->has('PowerBomb', 2))
 						|| $this->has('ScrewAttack'));
 			case 'Tournament':
 			default:
-				return ($this->has('Morph') && ($this->has('Bombs') || $this->has('PowerBomb', 2)))
+				return ($this->canMorph() && ($this->canUseMorphBombs() || $this->has('PowerBomb', 2)))
 					 || $this->has('ScrewAttack')
-					 || ($this->has('SpeedBooster') && $this->canUsePowerBombs() && $this->hasEnergyReserves(2));
+					 || ($this->canDashSM() && $this->canUsePowerBombs() && $this->hasEnergyReserves(2));
 		}
 	}
 	public function canPassBombPassages()
@@ -699,9 +764,9 @@ class ItemCollection extends Collection {
 			case 'Casual':
 				return $this->has('MoonPearl')
 					&& $this->has('RescueZelda')
-					&& $this->has('Flippers')
-					&& $this->has('Gravity')
-					&& $this->has('Morph')
+					&& $this->canSwim()
+					&& $this->canSwimSM()
+					&& $this->canMorph()
 					&& ($this->has('DefeatAgahnim')
 						|| ($this->has('Hammer') && $this->canLiftRocks())
 						|| $this->canLiftDarkRocks());
@@ -709,9 +774,9 @@ class ItemCollection extends Collection {
 			default:
 				return $this->has('MoonPearl')
 					&& $this->has('RescueZelda')
-					&& $this->has('Flippers')
-					&& ($this->canSpringBallJump() || $this->has('HiJump') || $this->has('Gravity'))
-					&& $this->has('Morph')
+					&& $this->canSwim()
+					&& ($this->canSpringBallJump() || $this->canHiJump() || $this->canSwimSM())
+					&& $this->canMorph()
 					&& ($this->has('DefeatAgahnim')
 						|| ($this->has('Hammer') && $this->canLiftRocks())
 						|| $this->canLiftDarkRocks());
@@ -722,10 +787,10 @@ class ItemCollection extends Collection {
 		switch($this->world->getSMLogic())
 		{
 			case 'Casual':
-				return $this->has('SpeedBooster') || $this->canAccessMaridiaPortal();
+				return $this->canDashSM() || $this->canAccessMaridiaPortal();
 			case 'Tournament':
 			default:
-				return $this->has('Ice') || $this->has('SpeedBooster') || $this->canAccessMaridiaPortal();
+				return $this->has('Ice') || $this->canDashSM() || $this->canAccessMaridiaPortal();
 		}
 	}
 	public function canDefeatDraygon()
@@ -734,10 +799,10 @@ class ItemCollection extends Collection {
 		switch($this->world->getSMLogic())
 		{
 			case 'Casual':
-				return $this->canDefeatBotwoon() && $this->has('Gravity') && (($this->has('SpeedBooster') && $this->has('HiJump')) || $this->canFlySM());
+				return $this->canDefeatBotwoon() && $this->canSwimSM() && (($this->canDashSM() && $this->canHiJump()) || $this->canFlySM());
 			case 'Tournament':
 			default:
-				return $this->canDefeatBotwoon() && $this->has('Gravity');
+				return $this->canDefeatBotwoon() && $this->canSwimSM();
 		}
 	}
 
