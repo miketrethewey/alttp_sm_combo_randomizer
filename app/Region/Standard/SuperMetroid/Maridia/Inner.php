@@ -66,8 +66,6 @@ class Inner extends Region {
 		$this->locations["Space Jump"]->setItem(Item::get('SpaceJump'));
         return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -75,75 +73,120 @@ class Inner extends Region {
 	 * @return $this
 	 */
 	public function initTournament() {
-
 		$this->locations["Super Missile (yellow Maridia)"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages() && ($items->has('Gravity') || $items->has('Ice') || ($items->has('HiJump') && $items->canSpringBallJump()));
+			return $items->canPassBombPassages() && ($items->has('Ice') || ($items->has('HiJump') && $items->canSpringBallJump()));
 		});
-
 		$this->locations["Missile (yellow Maridia super missile)"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages() && ($items->has('Gravity') || $items->has('Ice') || ($items->has('HiJump') && $items->canSpringBallJump()));
+			return $items->canPassBombPassages() && ($items->has('Ice') || ($items->has('HiJump') && $items->canSpringBallJump()));
 		});
-
 		$this->locations["Missile (yellow Maridia false wall)"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages() && ($items->has('Gravity') || $items->has('Ice') || ($items->has('HiJump') && $items->canSpringBallJump()));
+			return $items->canPassBombPassages() && ($items->has('Ice') || ($items->has('HiJump') && $items->canSpringBallJump()));
 		});
-
         $this->locations["Plasma Beam"]->setRequirements(function($location, $items) {
 			return $items->canDefeatDraygon()
 				&& (($items->has('Charge') && $items->hasEnergyReserves(3)) || $items->has('ScrewAttack') || $items->has('Plasma') || $items->has('SpeedBooster'))
 				&& ($items->has('HiJump') || $items->canSpringBallJump() || $items->canFlySM() || $items->has('SpeedBooster'));
 		});
-
 		$this->locations["Missile (left Maridia sand pit room)"]->setRequirements(function($location, $items) {
-			return ($items->has('HiJump') && ($items->has('SpaceJump') || $items->canSpringBallJump())) || $items->has('Gravity');
+			return $items->has('Super') && ($items->has('HiJump') && ($items->has('SpaceJump') || $items->canSpringBallJump()));
 		});
-
 		$this->locations["Reserve Tank, Maridia"]->setRequirements(function($location, $items) {
-			return ($items->has('HiJump') && ($items->has('SpaceJump') || $items->canSpringBallJump())) || $items->has('Gravity');
+			return $items->has('Super') && ($items->has('HiJump') && ($items->has('SpaceJump') || $items->canSpringBallJump()));
 		});
-
 		$this->locations["Missile (right Maridia sand pit room)"]->setRequirements(function($location, $items) {
-			return $items->has('HiJump') || $items->has('Gravity');
+			return $items->has('Super') && ($items->has('HiJump') || $items->has('Gravity'));
 		});
-
         $this->locations["Power Bomb (right Maridia sand pit room)"]->setRequirements(function($location, $items) {
-			return ($items->has('HiJump') && $items->canSpringBallJump()) || $items->has('Gravity');
+			return $items->has('Super') && ($items->has('HiJump') && $items->canSpringBallJump()) || $items->has('Gravity');
 		});
-
         $this->locations["Missile (pink Maridia)"]->setRequirements(function($location, $items) {
-            return $items->has('Gravity');
+            return $items->has('Super') && $items->has('Gravity');
 		});
-
         $this->locations["Super Missile (pink Maridia)"]->setRequirements(function($location, $items) {
-            return $items->has('Gravity');
+            return $items->has('Super') && $items->has('Gravity');
 		});
-
         $this->locations["Spring Ball"]->setRequirements(function($location, $items) {
-			return $items->has('Grapple')
-				&& $items->canUsePowerBombs()
-				&& (($items->has('Gravity') && ($items->canFlySM() || $items->has('HiJump')))
-				|| ($items->has('HiJump') && $items->canSpringBallJump() && $items->has('SpaceJump')));
+			return $this->canUsePowerBombs()
+				&& ($this->has('Grapple') || ($this->has('Ice') && $this->has('Gravity'))
+				&& ($items->has('HiJump') && $items->canSpringBallJump()));
 		});
-
         $this->locations["Missile (Draygon)"]->setRequirements(function($location, $items) {
-			return $items->canDefeatBotwoon() && $items->has('Gravity');
+			return $items->has('Super') && ($items->canDefeatBotwoon() || $this->canAccessMaridiaPortal());
 		});
-
         $this->locations["Energy Tank, Botwoon"]->setRequirements(function($location, $items) {
-            return $items->canDefeatBotwoon();
+            return $items->canDefeatBotwoon() || $this->canAccessMaridiaPortal();
 		});
-
         $this->locations["Space Jump"]->setRequirements(function($location, $items) {
             return $items->canDefeatDraygon();
 		});
 
         $this->can_enter = function($locations, $items) {
-            return ($this->world->getRegion('West Norfair')->canEnter($locations, $items)
-				  && $items->canUsePowerBombs()
-				  && ($items->has('Gravity') || ($items->has('HiJump') && ($items->has('Ice') || $items->canSpringBallJump()) && $items->has('Grapple'))))
-				|| $items->canAccessMaridiaPortal();
+            return $this->world->getRegion('Outer Maridia')->canEnter($locations, $items);
         };
+		
+		$this->can_complete = function($locations, $items) {
+			return ($this->canEnter($locations, $items) && $items->canDefeatBotwoon() && $items->canDefeatDraygon());
+		};
 
+		$this->prize_location->setRequirements($this->can_complete);
+
+		return $this;
+	}
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+		$this->locations["Super Missile (yellow Maridia)"]->setRequirements(function($location, $items) {
+			return $items->canPassBombPassages() && ($items->has('Ice') && $items->has('HiJump'));
+		});
+		$this->locations["Missile (yellow Maridia super missile)"]->setRequirements(function($location, $items) {
+			return $items->canPassBombPassages() && ($items->has('Ice') && $items->has('HiJump'));
+		});
+		$this->locations["Missile (yellow Maridia false wall)"]->setRequirements(function($location, $items) {
+			return $items->canPassBombPassages() && ($items->has('Ice') && $items->has('HiJump'));
+		});
+        $this->locations["Plasma Beam"]->setRequirements(function($location, $items) {
+			return $items->canDefeatDraygon() && ($this->has('ScrewAttack') || $this->has('Plasma')) && ($this->canFlySM() || $this->has('SpeedBooster'));
+		});
+		$this->locations["Missile (left Maridia sand pit room)"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && $items->has('Gravity');
+		});
+		$this->locations["Reserve Tank, Maridia"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && $items->has('Gravity');
+		});
+		$this->locations["Missile (right Maridia sand pit room)"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && $items->has('Gravity');
+		});
+        $this->locations["Power Bomb (right Maridia sand pit room)"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && $items->has('Gravity');
+		});
+        $this->locations["Missile (pink Maridia)"]->setRequirements(function($location, $items) {
+            return $items->has('Super') && $items->has('Gravity') && $this->has('SpeedBooster');
+		});
+        $this->locations["Super Missile (pink Maridia)"]->setRequirements(function($location, $items) {
+            return $items->has('Super') && $items->has('Gravity') && $this->has('SpeedBooster');
+		});
+        $this->locations["Spring Ball"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && $items->has('Grapple') 
+				&& $items->canUsePowerBombs()
+				&& (($items->has('Gravity') && ($items->canFlySM() || $items->has('HiJump')))
+				|| ($items->has('HiJump') && $items->has('SpaceJump')));
+		});
+        $this->locations["Missile (Draygon)"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && ($items->canDefeatBotwoon() || $this->canAccessMaridiaPortal());
+		});
+        $this->locations["Energy Tank, Botwoon"]->setRequirements(function($location, $items) {
+            return $items->canDefeatBotwoon() || $this->canAccessMaridiaPortal();
+		});
+        $this->locations["Space Jump"]->setRequirements(function($location, $items) {
+            return $items->canDefeatDraygon();
+		});
+        $this->can_enter = function($locations, $items) {
+            return $this->world->getRegion('Outer Maridia')->canEnter($locations, $items) && $this->has('Grapple')
+        };
 		$this->can_complete = function($locations, $items) {
 			return ($this->canEnter($locations, $items) && $items->canDefeatBotwoon() && $items->canDefeatDraygon());
 		};
@@ -155,59 +198,46 @@ class Inner extends Region {
 
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
-	 * within for Overworld Glitches Mode
+	 * within for Casual
 	 *
 	 * @return $this
 	 */
 	public function initCasual() {
-
 		$this->locations["Super Missile (yellow Maridia)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
-
 		$this->locations["Missile (yellow Maridia super missile)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
-
 		$this->locations["Missile (yellow Maridia false wall)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
-
         $this->locations["Plasma Beam"]->setRequirements(function($location, $items) {
 			return $items->canDefeatDraygon()
 				&& ($items->has('ScrewAttack') || $items->has('Plasma'))
 				&& ($items->has('HiJump') || $items->canFlySM());
 		});
-
-
 		$this->locations["Missile (left Maridia sand pit room)"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages();
+			return $items->has('Super') && $items->canPassBombPassages();
 		});
-
 		$this->locations["Reserve Tank, Maridia"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages();
+			return $items->has('Super') && $items->canPassBombPassages();
 		});
-
         $this->locations["Missile (pink Maridia)"]->setRequirements(function($location, $items) {
-            return $items->has('SpeedBooster');
+            return $items->has('Super') && $items->has('SpeedBooster');
 		});
-
         $this->locations["Super Missile (pink Maridia)"]->setRequirements(function($location, $items) {
-            return $items->has('SpeedBooster');
+            return $items->has('Super') && $items->has('SpeedBooster');
 		});
-
         $this->locations["Spring Ball"]->setRequirements(function($location, $items) {
-            return $items->canUsePowerBombs() && ($items->has('Grapple') && ($items->has('SpaceJump') || $items->has('HiJump')));
+            return $items->has('Super') && $items->canUsePowerBombs() && ($items->has('Grapple') && ($items->has('SpaceJump') || $items->has('HiJump')));
 		});
-
         $this->locations["Missile (Draygon)"]->setRequirements(function($location, $items) {
-            return $items->canDefeatBotwoon();
+            return $items->has('Super') && $items->canDefeatBotwoon();
 		});
-
         $this->locations["Energy Tank, Botwoon"]->setRequirements(function($location, $items) {
-            return $items->canDefeatBotwoon();
+            return $items->has('Super') && $items->canDefeatBotwoon();
 		});
-
         $this->locations["Space Jump"]->setRequirements(function($location, $items) {
             return $items->canDefeatDraygon() && ($items->canFlySM() || ($items->has('SpeedBooster') && $items->has('HiJump')));
 		});
@@ -219,7 +249,7 @@ class Inner extends Region {
 				|| $items->canAccessMaridiaPortal())
                 && $items->has('Gravity');
         };
-
+		
 		$this->can_complete = function($locations, $items) {
 			return ($this->canEnter($locations, $items) && $items->canDefeatBotwoon() && $items->canDefeatDraygon());
 		};

@@ -42,8 +42,6 @@ class Outer extends Region {
 		$this->locations["Missile (green Maridia tatori)"]->setItem(Item::get('Missile'));
         return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -51,13 +49,11 @@ class Outer extends Region {
 	 * @return $this
 	 */
 	public function initTournament() {
-
         $this->locations["Missile (green Maridia shinespark)"]->setRequirements(function($location, $items) {
-            return $items->has('Gravity') && $items->has('SpeedBooster');
+            return $items->has('Gravity') && $items->has('SpeedBooster');        
 		});
-
         $this->locations["Energy Tank, Mama turtle"]->setRequirements(function($location, $items) {
-            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple') || $items->canSpringBallJump();
+            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple') || $items->canSpringBallJump();        
 		});
 
         $this->can_enter = function($locations, $items) {
@@ -65,9 +61,33 @@ class Outer extends Region {
                 && $items->canUsePowerBombs()
                 && ($items->has('Gravity')
 				 || ($items->has('HiJump') && ($items->canSpringBallJump() || $items->has('Ice')))))
-			 || $items->canAccessMaridiaPortal();
+			 || ($items->canAccessMaridiaPortal() && $items->has('Super'));
         };
+        
+		return $this;
+	}
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+        $this->locations["Missile (green Maridia shinespark)"]->setRequirements(function($location, $items) {
+            return $items->has('Gravity') && $items->has('SpeedBooster');        
+		});
+        $this->locations["Energy Tank, Mama turtle"]->setRequirements(function($location, $items) {
+            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');        
+		});
 
+        $this->can_enter = function($locations, $items) {
+            return ($this->world->getRegion('West Norfair')->canEnter($locations, $items)
+                && $items->canUsePowerBombs()
+                && ($items->has('Gravity')
+				 || ($items->has('HiJump') && $items->has('Ice'))))
+			 || ($items->canAccessMaridiaPortal() && $items->has('Super'));
+        };
+        
 		return $this;
 	}
 
@@ -78,22 +98,20 @@ class Outer extends Region {
 	 * @return $this
 	 */
 	public function initCasual() {
-
         $this->locations["Missile (green Maridia shinespark)"]->setRequirements(function($location, $items) {
-            return $items->has('SpeedBooster');
+            return $items->has('SpeedBooster') && $items->has('Super');
 		});
-
         $this->locations["Energy Tank, Mama turtle"]->setRequirements(function($location, $items) {
-            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');
+            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');        
 		});
 
         $this->can_enter = function($locations, $items) {
             return (($this->world->getRegion('West Norfair')->canEnter($locations, $items)
 				&& $items->canUsePowerBombs())
-				|| $items->canAccessMaridiaPortal())
+				|| ($items->canAccessMaridiaPortal() && $items->has('Super'))				
                 && $items->has('Gravity');
         };
-
+        
 		return $this;
 	}
 }
