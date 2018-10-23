@@ -51,6 +51,7 @@ class Pink extends Region {
 		return $this;
 	}
 
+
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -61,60 +62,36 @@ class Pink extends Region {
 		$this->locations["Super Missile (pink Brinstar)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages() && $items->has('Super');
 		});
+
         $this->locations["Charge Beam"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
+
         $this->locations["Power Bomb (pink Brinstar)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->has('Super');
 		});
+
         $this->locations["Missile (green Brinstar pipe)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph') && ($items->has('PowerBomb') || $items->has('Super') || $items->canAccessNorfairPortal());
 		});
+
         $this->locations["Energy Tank, Waterway"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->canOpenRedDoors() && $items->has('SpeedBooster') && ($items->hasEnergyReserves(1) || $items->has('Gravity'));
 		});
+
         $this->locations["Energy Tank, Brinstar Gate"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && ($items->has('Wave') || $items->has('Super'));
 		});
+
         $this->can_enter = function($locations, $items) {
 			return ($items->canOpenRedDoors() && ($items->canDestroyBombWalls() || $items->has('SpeedBooster')))
 				|| $items->canUsePowerBombs()
 				|| ($items->canAccessNorfairPortal() && $items->has('Morph') && ($items->canOpenRedDoors() || $items->has('Wave')) && ($items->has('Ice') || $items->has('HiJump') || $items->canSpringBallJump() || $items->canFlySM()));
 		};
+
 		return $this;
 	}
-	/**
-	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
-	 * within for Normal Mode
-	 *
-	 * @return $this
-	 */
-	public function initNormal() {
-		$this->locations["Super Missile (pink Brinstar)"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages() && $items->has('Super');
-		});
-        $this->locations["Charge Beam"]->setRequirements(function($location, $items) {
-			return $items->canPassBombPassages();
-		});
-        $this->locations["Power Bomb (pink Brinstar)"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs() && $items->has('Super');
-		});
-        $this->locations["Missile (green Brinstar pipe)"]->setRequirements(function($location, $items) {
-			return $items->has('Morph') && ($items->has('PowerBomb') || $items->has('Super') || $items->canAccessNorfairPortal());
-		});
-        $this->locations["Energy Tank, Waterway"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs() && $items->canOpenRedDoors() && $items->has('SpeedBooster') && ($items->hasEnergyReserves(1) || $items->has('Gravity'));
-		});
-        $this->locations["Energy Tank, Brinstar Gate"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs() && ($items->has('Wave') || $items->has('Super'));
-		});
-        $this->can_enter = function($locations, $items) {
-			return ($items->canOpenRedDoors() && ($items->canDestroyBombWalls() || $items->has('SpeedBooster')))
-				|| $items->canUsePowerBombs()
-				|| ($items->canAccessNorfairPortal() && $items->has('Morph') && ($items->canOpenRedDoors() || $items->has('Wave')) && ($items->has('Ice') || $items->has('HiJump')) || $items->canFlySM()));
-		};
-		return $this;
-	}
+
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -125,26 +102,33 @@ class Pink extends Region {
 		$this->locations["Super Missile (pink Brinstar)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages() && $items->has('Super');
 		});
+
         $this->locations["Charge Beam"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
+
         $this->locations["Power Bomb (pink Brinstar)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->has('Super') && $items->hasEnergyReserves(1);
 		});
+
         $this->locations["Missile (green Brinstar pipe)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph') && ($items->has('PowerBomb') || $items->has('Super') || $items->canAccessNorfairPortal());
 		});
+
         $this->locations["Energy Tank, Waterway"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->canOpenRedDoors() && $items->has('SpeedBooster') && ($items->hasEnergyReserves(1) || $items->has('Gravity'));
 		});
+
         $this->locations["Energy Tank, Brinstar Gate"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->has('Wave') && $items->hasEnergyReserves(1);
 		});
+
         $this->can_enter = function($locations, $items) {
 			return ($items->canOpenRedDoors() && ($items->canDestroyBombWalls() || $items->has('SpeedBooster')))
 				|| $items->canUsePowerBombs()
 				|| ($items->canAccessNorfairPortal() && $items->has('Morph') && $items->has('Wave') && ($items->has('Ice') || $items->has('HiJump') || $items->has('SpaceJump')));
 		};
+
 		return $this;
 	}
 }
