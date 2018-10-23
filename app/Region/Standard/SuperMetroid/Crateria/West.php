@@ -43,8 +43,6 @@ class West extends Region {
 
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -55,15 +53,35 @@ class West extends Region {
 		$this->locations["Energy Tank, Gauntlet"]->setRequirements(function($location, $items) {
 			return $items->canEnterAndLeaveGauntlet();
         });
-
         $this->locations["Missile (Crateria gauntlet right)"]->setRequirements(function($location, $items) {
 			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages();
         });
-
         $this->locations["Missile (Crateria gauntlet left)"]->setRequirements(function($location, $items) {
 			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages();
         });
+        $this->can_enter = function($locations, $items) {
+			return $items->canDestroyBombWalls() || $items->has('SpeedBooster');
+		};
 
+		return $this;
+	}
+
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {        
+		$this->locations["Energy Tank, Gauntlet"]->setRequirements(function($location, $items) {
+			return $items->canEnterAndLeaveGauntlet();
+        });
+        $this->locations["Missile (Crateria gauntlet right)"]->setRequirements(function($location, $items) {
+			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages();
+        });
+        $this->locations["Missile (Crateria gauntlet left)"]->setRequirements(function($location, $items) {
+			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages();
+        });
         $this->can_enter = function($locations, $items) {
 			return $items->canDestroyBombWalls() || $items->has('SpeedBooster');
 		};
@@ -78,19 +96,15 @@ class West extends Region {
 	 * @return $this
 	 */
 	public function initCasual() {
-
 		$this->locations["Energy Tank, Gauntlet"]->setRequirements(function($location, $items) {
 			return $items->canEnterAndLeaveGauntlet() && $items->hasEnergyReserves(1);
         });
-
         $this->locations["Missile (Crateria gauntlet right)"]->setRequirements(function($location, $items) {
-			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages() && $items->hasEnergyReserves(2);
+			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages() && $items->hasEnergyReserves(3);
 		});
-
         $this->locations["Missile (Crateria gauntlet left)"]->setRequirements(function($location, $items) {
-			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages() && $items->hasEnergyReserves(2);
-		});
-
+			return $items->canEnterAndLeaveGauntlet() && $items->canPassBombPassages() && $items->hasEnergyReserves(3);
+		}); 
         $this->can_enter = function($locations, $items) {
 			return $items->canDestroyBombWalls() || $items->has('SpeedBooster');
 		};

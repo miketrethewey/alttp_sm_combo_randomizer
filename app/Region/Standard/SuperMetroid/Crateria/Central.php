@@ -44,8 +44,6 @@ class Central extends Region {
 		$this->locations["Bombs"]->setItem(Item::get('Bombs'));
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament Logic
@@ -56,26 +54,44 @@ class Central extends Region {
 		$this->locations["Power Bomb (Crateria surface)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && ($items->has('SpeedBooster') || $items->canFlySM());
 		});
-
 		$this->locations["Missile (Crateria middle)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
-
 		$this->locations["Missile (Crateria bottom)"]->setRequirements(function($location, $items) {
 			return $items->canDestroyBombWalls();
 		});
-
 		$this->locations["Super Missile (Crateria)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->hasEnergyReserves(2) && $items->has('SpeedBooster');
 		});
-
 		$this->locations["Bombs"]->setRequirements(function($location, $items) {
 			return $items->has('Morph') && $items->canOpenRedDoors();
 		});
-
 		return $this;
 	}
-
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal Mode
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+		$this->locations["Power Bomb (Crateria surface)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs() && ($items->has('SpeedBooster') || $items->canFlySM());
+		});
+		$this->locations["Missile (Crateria middle)"]->setRequirements(function($location, $items) {
+			return $items->canPassBombPassages();
+		});
+		$this->locations["Missile (Crateria bottom)"]->setRequirements(function($location, $items) {
+			return $items->canDestroyBombWalls();
+		});
+		$this->locations["Super Missile (Crateria)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs() && $items->hasEnergyReserves(2) && $items->has('SpeedBooster');
+		});
+		$this->locations["Bombs"]->setRequirements(function($location, $items) {
+			return $items->has('Morph') && $items->canOpenRedDoors();
+		});
+		return $this;
+	}
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -86,23 +102,20 @@ class Central extends Region {
 		$this->locations["Power Bomb (Crateria surface)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && ($items->has('SpeedBooster') || $items->canFlySM());
 		});
-
 		$this->locations["Missile (Crateria middle)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages();
 		});
-
 		$this->locations["Missile (Crateria bottom)"]->setRequirements(function($location, $items) {
 			return $items->canDestroyBombWalls();
 		});
-
 		$this->locations["Super Missile (Crateria)"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs() && $items->hasEnergyReserves(2) && $items->has('SpeedBooster');
+			return $items->canUsePowerBombs() && $items->has('Ice') && $items->has('SpeedBooster')
+			&& ($items->has('Bombs') || $items->has('PowerBomb', 2) || $items->has('Springball'))
+			&& ($items->hasEnergyReserves(3) || ($items->has('Varia') && $items->hasEnergyReserves(2));
 		});
-
 		$this->locations["Bombs"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages() && $items->canOpenRedDoors();
 		});
-
-		return $this;
+		return $this;		
 	}
 }
