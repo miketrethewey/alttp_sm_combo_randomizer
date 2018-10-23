@@ -610,44 +610,231 @@ class ItemCollection extends Collection {
 			|| $this->has('BottleWithGoldBee');
 	}
 
-	public function canAccessDeathMountainPortal()
-	{
-		return (($this->canDestroyBombWalls() || $this->canDashSM())
-		&& ($this->canOpenGreenDoors() && $this->canMorph()));
-	}
-	public function canAccessMiseryMirePortal()
-	{
-		switch($this->world->getSMLogic())
-		{
-			case 'Casual':
-				return $this->heatProof()
-					&& $this->canOpenGreenDoors()
-					&& $this->canUsePowerBombs()
-					&& ($this->canSwimSM() && $this->has('SpaceJump'));
-			case 'Tournament':
-			default:
-				return $this->heatProof()
-					&& $this->canOpenGreenDoors()
-					&& ($this->canHiJump() || $this->canSwimSM())
-					&& $this->canUsePowerBombs();
-		}
-	}
-	public function canAccessDarkWorldPortal()
-	{
-		switch($this->world->getSMLogic())
-		{
-			case 'Casual':
-				return $this->canUsePowerBombs() && $this->canOpenGreenDoors() && $this->canSwimSM() && $this->canDashSM();
-			case 'Tournament':
-			default:
-				return $this->canUsePowerBombs()
-					&& $this->canOpenGreenDoors()
-					&& ($this->has('Charge') || ($this->has('Super') && $this->has('Missile')))
-					&& ($this->canSwimSM() || ($this->canHiJump() && $this->has('Ice') && $this->canGrappleSM()))
-					&& ($this->has('Ice') || ($this->canDashSM() && $this->canSwimSM()));
-		}
-	}
-
+ 	/**
+ 	*  Requirements for accessing the Portal location in Upper Norfair, which goes to Death Mountain
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canAccessDeathMountainPortal()
+ 	{
+ 		return ($this->canDestroyBombWalls() || $this->has('SpeedBooster')) && ($this->has('Super') && $this->has('Morph'));
+ 	}
+ 	
+ 	/** Requirements for accessing the Death Mountain portal location, which goes to Upper Norfair
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canAccessNorfairPortal()
+ 	{
+ 		return $this->canFly() || ($this->canLiftRocks() && $this->has('Lamp'));
+ 	}
+ 	
+ 	/** Requirements for accessing the Misery Mire Portal location, which goes to the Screw Attack in Lower Norfair
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canAccessLowerNorfairPortal()
+ 	{
+ 		switch ($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $this->canFly() && $this->canLiftDarkRocks() && $this->has('MoonPearl');  // only require Moon Pearl for Mire Swamp, for instances of Murderdactyles
+ 			default:
+ 				return $this->canFly() && $this->canLiftDarkRocks();
+ 		}
+ 	}
+ 	
+ 	/** Requirements for accessing the Lower Norfair Portal location, which goes to the swamp in Misery Mire
+ 	*
+ 	*   Since we're coming from Upper Norfair, a lava dive will *always* require Varia Suit to be present before you are assumed to go to Lower Norfair
+ 	* @return bool
+ 	*/
+ 	public function canAccessMiseryMirePortal()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $this->has('Varia') && $items->has('Charge') && $this->has('Super', 4) && $this->canUsePowerBombs() && $this->has('Gravity')
+ 				&& $this->has('SpaceJump') && $items->has('Ice') && $items->has('Spazer') && $items->has('Wave') && $items->has('PowerBomb', 3);
+ 				// Casual logic will dictate that we need to fight Golden Torizo, so a minimum of 20 Supers and Charge/Ice/Spazer/Wave will be needed for the fight,
+ 				// as well as 15 PBs to get around all of the bombable blocks in Lower Norfair
+ 			case 'Normal':
+ 				return $items->has('Varia') && $items->hasEnergyReserves(3) && $items->has('Super', 2) && $items->canUsePowerBombs() && ($this->has('HiJump') || $this->has('Gravity'));
+ 			case 'Tournament':
+ 			default:
+ 				return $items->has('Varia') && $items->hasEnergyReserves(2) && $items->has('Super') && $items->canUsePowerBombs() && ($this->has('HiJump') || $this->has('Gravity'));
+ 		}
+ 	}
+ 	
+ 	/** Requirements for accessing the Dark Lake Hylia Portal location, which goes to Eastern Maridia near Draygon
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canAccessMaridiaPortal()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $this->has('MoonPearl')
+ 					&& $this->has('RescueZelda')
+ 					&& $this->has('Flippers')
+ 					&& $this->has('Gravity')
+ 					&& $this->has('Morph')
+ 					&& ($this->has('DefeatAgahnim')
+ 						|| ($this->has('Hammer') && $this->canLiftRocks())
+ 						|| $this->canLiftDarkRocks());
+ 			case 'Normal':
+ 				return $this->has('MoonPearl')
+ 					&& $this->has('RescueZelda')
+ 					&& $this->has('Flippers')
+ 					&& $this->has('Morph')
+ 					&& ($this->has('HiJump') && $item->has('Grapple'))
+ 					&& ($this->has('DefeatAgahnim')
+ 						|| ($this->has('Hammer') && $this->canLiftRocks())
+ 						|| $this->canLiftDarkRocks());					
+ 			case 'Tournament':
+ 			default:
+ 				return $this->has('MoonPearl')
+ 					&& $this->has('RescueZelda')
+ 					&& $this->has('Flippers')
+ 					&& $this->has('Morph')
+ 					&& ($this->canSpringBallJump() || $this->has('HiJump'))
+ 					&& ($this->has('DefeatAgahnim')
+ 						|| ($this->has('Hammer') && $this->canLiftRocks())
+ 						|| $this->canLiftDarkRocks());
+ 				}
+ 	}
+ 	
+ 	/** Requirements for accessing the Eastern Maridia Portal location, which goes to Lake Hylia in southeastern Dark Hyrule
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canAccessDarkWorldPortal()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $this->canUsePowerBombs() && $this->has('Charge') && $this->has('PowerBomb', 3) && $this->has('Super') && $this->has('Gravity') && $this->has('SpeedBooster') && $this->canFlySM() && $this->has('MoonPearl')&& ($items->has('Flippers') || $items->has('MagicMirror'));
+ 			case 'Tournament':
+ 			case 'Normal':
+ 				return $this->canUsePowerBombs() && $this->has('MoonPearl') && ($items->has('Flippers') || $items->has('MagicMirror'))
+ 					&& $this->has('Super', 2) && $this->has('Missile', 4)
+ 					&& ($this->has('Gravity') || ($this->has('HiJump') && $this->has('Ice') && $this->has('Grapple')))
+ 					&& ($this->has('Ice') || ($this->has('SpeedBooster') && $this->has('Gravity')));
+ 		}
+ 	}
+ 	
+ 	/** Requirements for entering the Wrecked Ship, either through the front door or through Forgotten Highway
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canEnterWreckedShipMain()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $items->canUsePowerBombs() && $items->has('PowerBomb', 2) && $this->has('Super', 2) && $this->has('Missile', 5)
+ 				&& (($this->hasEnergyReserves(5) || ($this->hasEnergyReserves(3) && $this->has('Varia'))) && ($items->has('SpeedBooster') || $items->has('Grapple') || $items->has('SpaceJump') || $items->canSpringBallJump()));
+ 			case 'Normal':
+ 			case 'Tournament':
+ 			default:
+ 				return $this->has('Super') && $this->has('Missile', 2)
+ 				&& (($items->canUsePowerBombs() && $this->hasEnergyReserves(3) && ($items->has('SpeedBooster') || $items->has('Grapple') || $items->canSpringBallJump()))
+ 				|| ($items->hasEnergyReserves(2) && $items->canAccessMaridiaPortal() && $items->canPassBombPassages()));
+ 		}
+ 	}
+ 	
+ 	/** Requirements for entering and leaving the Gauntlet in Crateria
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canEnterAndLeaveGauntlet()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return ($this->has('Morph') && ($this->canFlySM() || $this->has('SpeedBooster')))
+ 					&& ($this->canIbj()
+ 						|| ($this->canUsePowerBombs() && $this->has('PowerBomb', 2))
+ 						|| $this->has('ScrewAttack'));
+ 			case 'Tournament':
+ 			case 'Normal':
+ 			default:
+ 				return ($this->has('Morph') && ($this->has('Bombs') || $this->has('PowerBomb', 2)))
+ 					 || $this->has('ScrewAttack')
+ 					 || ($this->has('SpeedBooster') && $this->canUsePowerBombs() && $this->has('PowerBomb', 2) && $this->hasEnergyReserves(2));
+ 		}		
+ 	}
+ 	
+ 	/* Requirements for being able to get to Crocomire and exit his area
+ 	* We will account for coming from both sides, which will be clearly spelled out below
+ 	* v6.1 of Croc logic
+ 	* Morphless Croc involves going through Worst Room in the Game, up through Mickey Mouse, and then back to the elevator to get to Lava Dive, which then goes to either the grapple maw room, or Bubble Mountain to the blue gate
+ 	* Obvioulsy that is a long trek, so a minimum of 7 energy tanks is required to progress that way, if it involves Crystal Flash
+ 	*
+ 	* @return bool
+ 	*/
+ 	public function canEnterAndLeaveCrocomire()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $items->has('Wave') && $items->has('Super') && $items->has('Varia') && $items->has('Charge')
+ 				&& ((($items->canIbj() || $items->has('HiJump') || $items->has('Ice') || $items->has('SpaceJump'))   // this one takes us through Cathedral and Bubble Mountain to the blue gate to Croc
+ 				   || ($items->has('SpeedBooster') || $items->canUsePowerBombs())));  // this one takes us through either the Super Door to the Croc speedway, or the speedway to the blue gate next to Croc
+ 			// Lower Norair's portal is not considered on Casual
+ 			case 'Normal':
+ 				return $items->has('Super', 2) && $items->has('Missile', 3)
+ 				&& (((($items->hasEnergyReserves(5) || ($items->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($items->has('Varia') && $items-hasEnergyReserves(2)))
+ 				   && $items->canPassBombPassages() && ($items->canIbj() || $items->has('HiJump') || $items->has('Ice')))  // this takes us through Cathedral and Bubble Mountain
+ 				   || ($items->has('SpeedBooster') && $items->canUsePowerBombs() && $items->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
+ 				   || ($items->canAccessLowerNorfairPortal() && $items->canFlySM() && $items->canDestroyBombWalls() && ((($items-hasEnergyReserves(8) && $items->canCrystalFlash()) || ($items->hasEnergyReserves(2) && $items->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
+ 			case 'Tournament':
+ 			default:
+ 				return $items->has('Super', 2)
+ 				&& (((($items->hasEnergyReserves(3) || ($items->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($items->has('Varia') && $items-hasEnergyReserves(1)))
+ 				   && $items->canPassBombPassages() && ($items->canIbj() || $items->has('HiJump') || $items->has('Ice') || $items->canSpringBallJump()))  // this takes us through Cathedral and Bubble Mountain
+ 				   || ($items->has('SpeedBooster') && $items->canUsePowerBombs() && $items->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
+ 				   || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls() && ($items->canSpringBallJump() || $items->canFlySM()) && ((($items-hasEnergyReserves(7) && $items->canCrystalFlash()) || ($items->hasEnergyReserves(2) && $items->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
+ 		}
+ 	}
+ 	public function canDefeatBotwoon()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $this->has('SpeedBooster') || $this->canAccessMaridiaPortal();
+ 			case 'Tournament':
+ 			case 'Normal':
+ 			default:
+ 				return $this->has('Ice') || $this->has('SpeedBooster') || $this->canAccessMaridiaPortal();
+ 		}
+ 	}
+ 	public function canDefeatDraygon()
+ 	{
+ 		switch($this->world->getSMLogic())
+ 		{
+ 			case 'Casual':
+ 				return $this->canDefeatBotwoon() && $this->has('Gravity') && (($this->has('SpeedBooster') && $this->has('HiJump')) || $this->canFlySM()) && $items->has('Super');
+ 			case 'Tournament':
+ 				return $items->has('Super') && ($this->canDefeatBotwoon() || $this->canAccessMaridiaPortal()) && $this->has('Grapple') && $items->has('Morph');
+ 			case 'Normal':
+ 				return $items->has('Super') && ($this->canDefeatBotwoon() || $this->canAccessMaridiaPortal()) && $this->has('Gravity');
+ 			default:
+ 				return $this->canDefeatBotwoon() && $this->has('Gravity');
+ 		}
+ 	}
+ 	
+ 	/*
+ 	* Determine if any SM progression can be in Ganon's Tower, and allow if so
+ 	
+ 	* @return bool
+ 	*/
+ 	public function canProgressInGT()
+ 	{
+ 
+ 	}
+ 	
 	/* Super Metroid Ability Macros */
 	public function canBombThingsSM()
 	{
@@ -684,9 +871,9 @@ class ItemCollection extends Collection {
 	{
 		return $this->has('Varia');
 	}
-	public function canHellRun()
+	public function canHellRun(int $amount = 5)
 	{
-		return $this->heatProof() || $this->hasEnergyReserves(5);
+		return $this->heatProof() || $this->hasEnergyReserves($amount);
 	}
 	public function canHiJump()
 	{
@@ -738,6 +925,7 @@ class ItemCollection extends Collection {
 					&& ($this->canIbj()
 						|| ($this->canUsePowerBombs() && $this->has('PowerBomb', 2))
 						|| $this->has('ScrewAttack'));
+			case 'Normal':
 			case 'Tournament':
 			default:
 				return ($this->canMorph() && ($this->canUseMorphBombs() || $this->has('PowerBomb', 2)))
@@ -748,62 +936,6 @@ class ItemCollection extends Collection {
 	public function canPassBombPassages()
 	{
 		return $this->canUsePowerBombs() || $this->canIbj();
-	}
-	public function canAccessNorfairPortal()
-	{
-		return $this->canFly() || ($this->canLiftRocks() && $this->has('Lamp'));
-	}
-	public function canAccessLowerNorfairPortal()
-	{
-		return $this->canFly() && $this->canLiftDarkRocks();
-	}
-	public function canAccessMaridiaPortal()
-	{
-		switch($this->world->getSMLogic())
-		{
-			case 'Casual':
-				return $this->has('MoonPearl')
-					&& $this->has('RescueZelda')
-					&& $this->canSwim()
-					&& $this->canSwimSM()
-					&& $this->canMorph()
-					&& ($this->has('DefeatAgahnim')
-						|| ($this->has('Hammer') && $this->canLiftRocks())
-						|| $this->canLiftDarkRocks());
-			case 'Tournament':
-			default:
-				return $this->has('MoonPearl')
-					&& $this->has('RescueZelda')
-					&& $this->canSwim()
-					&& ($this->canSpringBallJump() || $this->canHiJump() || $this->canSwimSM())
-					&& $this->canMorph()
-					&& ($this->has('DefeatAgahnim')
-						|| ($this->has('Hammer') && $this->canLiftRocks())
-						|| $this->canLiftDarkRocks());
-				}
-	}
-	public function canDefeatBotwoon()
-	{
-		switch($this->world->getSMLogic())
-		{
-			case 'Casual':
-				return $this->canDashSM() || $this->canAccessMaridiaPortal();
-			case 'Tournament':
-			default:
-				return $this->has('Ice') || $this->canDashSM() || $this->canAccessMaridiaPortal();
-		}
-	}
-	public function canDefeatDraygon()
-	{
-
-		switch($this->world->getSMLogic())
-		{
-			case 'Casual':
-				return $this->canDefeatBotwoon() && $this->canSwimSM() && (($this->canDashSM() && $this->canHiJump()) || $this->canFlySM());
-			case 'Tournament':
-			default:
-				return $this->canDefeatBotwoon() && $this->canSwimSM();
-		}
 	}
 
 	public function __toString() {
