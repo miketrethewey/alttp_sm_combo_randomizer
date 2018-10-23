@@ -48,8 +48,6 @@ class Blue extends Region {
 		$this->locations["Missile (blue Brinstar behind missile)"]->setItem(Item::get('Missile'));
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -60,58 +58,70 @@ class Blue extends Region {
 		$this->locations["Power Bomb (blue Brinstar)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Missile (blue Brinstar middle)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph');
 		});
-
         $this->locations["Missile (blue Brinstar bottom)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph');
 		});
-
         $this->locations["Missile (blue Brinstar top)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Missile (blue Brinstar behind missile)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
 		return $this;
 	}
-
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal Mode
+	 * Normal Mode will be a mesh between the two difficulties
+	 * 
+	 * @return $this
+	 */
+	public function initNormal() {
+		$this->locations["Power Bomb (blue Brinstar)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs();
+		});
+        $this->locations["Missile (blue Brinstar middle)"]->setRequirements(function($location, $items) {
+			return $items->has('Morph');
+		});
+        $this->locations["Missile (blue Brinstar bottom)"]->setRequirements(function($location, $items) {
+			return $items->has('Morph');
+		});
+        $this->locations["Missile (blue Brinstar top)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs();
+		});
+        $this->locations["Missile (blue Brinstar behind missile)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs();
+		});
+		return $this;
+	}
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
 	 *
 	 * @return $this
 	 */
-
 	public function initCasual() {
 		$this->locations["Power Bomb (blue Brinstar)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Missile (blue Brinstar middle)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph');
 		});
-
         $this->locations["Missile (blue Brinstar bottom)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph');
 		});
-
         $this->locations["Missile (blue Brinstar top)"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs();
+			return $items->canUsePowerBombs() && $items->has('PowerBomb', 2);
 		});
-
         $this->locations["Missile (blue Brinstar behind missile)"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs();
+			return $items->canUsePowerBombs() && $items->has('PowerBomb', 2);
 		});
-
         $this->locations["Energy Tank, Brinstar Ceiling"]->setRequirements(function($location, $items) {
-			return $items->canFlySM() || $items->has('HiJump') || $items->has('SpeedBooster') || $items->has('Ice');
-		});
-
+			return $items->has('HiJump') || ($items->has('SpeedBooster') && $items->canUsePowerBombs()) || $items->has('Ice');
+		});		
 		return $this;
 	}
 }

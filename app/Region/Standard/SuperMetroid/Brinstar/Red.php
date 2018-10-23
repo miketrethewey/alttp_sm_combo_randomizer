@@ -44,8 +44,6 @@ class Red extends Region {
 		$this->locations["Spazer"]->setItem(Item::get('Spazer'));
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -53,7 +51,6 @@ class Red extends Region {
 	 * @return $this
 	 */
 	public function initTournament() {
-
 		$this->locations["X-Ray Scope"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs()
                 && $items->canOpenRedDoors()
@@ -62,32 +59,58 @@ class Red extends Region {
                  || ($items->has('Varia') && $items->hasEnergyReserves(3) && ($items->canIbj() || ($items->has('HiJump') && $items->has('SpeedBooster')) || $items->canSpringBallJump()))
                  || ($items->hasEnergyReserves(5) && ($items->canIbj() || ($items->has('HiJump') && $items->has('SpeedBooster')) || $items->canSpringBallJump())));
 		});
-
         $this->locations["Power Bomb (red Brinstar sidehopper room)"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs() && $items->has('Super');
 		});
-
         $this->locations["Power Bomb (red Brinstar spike room)"]->setRequirements(function($location, $items) {
             return $items->has('Super');
 		});
-
         $this->locations["Missile (red Brinstar spike room)"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs() && $items->has('Super');
 		});
-
         $this->locations["Spazer"]->setRequirements(function($location, $items) {
             return $items->canPassBombPassages() && $items->has('Super');
 		});
-
         $this->can_enter = function($locations, $items) {
             return (($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
                 && ($items->has('Super') && $items->has('Morph')))
                 || ($items->canAccessNorfairPortal() && ($items->has('Ice') || $items->canSpringBallJump() || $items->has('HiJump') || $items->canFlySM()));
 		};
-
 		return $this;
 	}
-
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal Mode
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+		$this->locations["X-Ray Scope"]->setRequirements(function($location, $items) {
+            return $items->canUsePowerBombs()
+                && $items->canOpenRedDoors()
+                && ($items->has('Grapple') || $items->has('SpaceJump')
+                || ($items->canIbj() && $items->has('Varia') && ($items->has('Ice') && $items->hasEnergyReserves(5) || ($items->has('HiJump') && $items->hasEnergyReserves(4))))
+                || ($items->canCrystalFlash() && ($items->has('Ice') || $items->has('HiJump')) && $items->hasEnergyReserves(1) && $items->canIbj())));
+		});
+        $this->locations["Power Bomb (red Brinstar sidehopper room)"]->setRequirements(function($location, $items) {
+            return $items->canUsePowerBombs() && $items->has('Super');
+		});
+        $this->locations["Power Bomb (red Brinstar spike room)"]->setRequirements(function($location, $items) {
+            return $items->has('Super');
+		});
+        $this->locations["Missile (red Brinstar spike room)"]->setRequirements(function($location, $items) {
+            return $items->canUsePowerBombs() && $items->has('Super');
+		});
+        $this->locations["Spazer"]->setRequirements(function($location, $items) {
+            return $items->canPassBombPassages() && $items->has('Super');
+		});
+        $this->can_enter = function($locations, $items) {
+            return (($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
+                && ($items->has('Super') && $items->has('Morph')))
+                || ($items->canAccessNorfairPortal() && ($items->has('Ice') || $items->has('HiJump') || $items->canFlySM()));
+		};
+		return $this;
+	}
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -95,35 +118,28 @@ class Red extends Region {
 	 * @return $this
 	 */
 	public function initCasual() {
-
 		$this->locations["X-Ray Scope"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs()
                 && $items->canOpenRedDoors()
                 && ($items->has('Grapple') || $items->has('SpaceJump'));
 		});
-
         $this->locations["Power Bomb (red Brinstar sidehopper room)"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs() && $items->has('Super');
 		});
-
         $this->locations["Power Bomb (red Brinstar spike room)"]->setRequirements(function($location, $items) {
             return ($items->canUsePowerBombs() || $items->has('Ice')) && $items->has('Super');
 		});
-
         $this->locations["Missile (red Brinstar spike room)"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs() && $items->has('Super');
 		});
-
         $this->locations["Spazer"]->setRequirements(function($location, $items) {
             return $items->canPassBombPassages() && $items->has('Super');
 		});
-
         $this->can_enter = function($locations, $items) {
             return (($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
                 && ($items->has('Super') && $items->has('Morph')))
                 || ($items->canAccessNorfairPortal() && ($items->has('Ice') || $items->has('HiJump') || $items->has('SpaceJump')));
 		};
-
 		return $this;
 	}
 }
