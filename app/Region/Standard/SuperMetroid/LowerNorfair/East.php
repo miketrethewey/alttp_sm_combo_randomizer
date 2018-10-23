@@ -52,8 +52,6 @@ class East extends Region {
 		$this->locations["Energy Tank, Firefleas"]->setItem(Item::get('ETank'));
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -61,7 +59,7 @@ class East extends Region {
 	 * @return $this
 	 */
 	public function initTournament() {
-
+        
         $this->locations["Missile (lower Norfair near Wave Beam)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph') && $items->canDestroyBombWalls();
         });
@@ -79,17 +77,17 @@ class East extends Region {
         });
 
         $this->locations["Energy Tank, Ridley"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerbombs() && $items->has('Super') && $items->has('Charge');
+			return $this->canEnter($locations, $items);
         });
 
 		$this->can_enter = function($locations, $items) {
 			return $items->heatProof()
 				&&	(($this->world->getRegion('East Norfair')->canEnter($locations, $items)
-						&& $items->canUsePowerBombs()
+						&& $items->canUsePowerBombs()		
 						&& ($items->has('HiJump') || $items->has('Gravity')))
-					|| ($items->canAccessLowerNorfairPortal()
+					|| ($items->canAccessLowerNorfairPortal() 
 						&& $items->canDestroyBombWalls()
-						&& $items->has('Super')
+						&& $items->has('Super') 
 						&& ($items->canFlySM() || $items->canSpringBallJump() || $items->has('SpeedBooster'))))
 				&& ($items->canFlySM() || $items->has('HiJump') || $items->canSpringBallJump() || ($items->has('Ice') && $items->has('Charge')))
 				&& ($items->canPassBombPassages() || ($items->has('ScrewAttack') && $items->has('SpaceJump')))
@@ -100,14 +98,65 @@ class East extends Region {
 			return $this->canEnter($locations, $items) && $items->canUsePowerbombs() && $items->has('Super') && $items->has('Charge');
 		};
 
-		$this->prize_location->setRequirements($this->can_complete);
+		$this->prize_location->setRequirements($this->can_complete);	
+
+		return $this;
+	}
+	
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+        
+        $this->locations["Missile (lower Norfair near Wave Beam)"]->setRequirements(function($location, $items) {
+			return $items->has('Morph') && $items->canDestroyBombWalls();
+        });
+
+		$this->locations["Missile (Mickey Mouse room)"]->setRequirements(function($location, $items) {
+			return $items->has('Morph') && $items->canDestroyBombWalls();
+        });
+
+		$this->locations["Power Bomb (lower Norfair above fire flea room)"]->setRequirements(function($location, $items) {
+			return $items->canPassBombPassages();
+        });
+
+		$this->locations["Power Bomb (Power Bombs of shame)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerbombs();
+        });
+
+        $this->locations["Energy Tank, Ridley"]->setRequirements(function($location, $items) {
+			return $this->canEnter($locations, $items);
+        });
+
+		$this->can_enter = function($locations, $items) {
+			return $items->heatProof()
+				&&	(($this->world->getRegion('East Norfair')->canEnter($locations, $items)
+						&& $items->canUsePowerBombs()		
+						&& ($items->has('HiJump') || $items->has('Gravity')))
+					|| ($items->canAccessLowerNorfairPortal() 
+						&& $items->canDestroyBombWalls()
+						&& $items->has('Super')
+						&& ($items->canFlySM() || $items->has('SpeedBooster'))))
+				&& ($items->canFlySM() || $items->has('HiJump') || $items->canSpringBallJump() || ($items->has('Ice') && $items->has('Charge')))
+				&& ($items->canPassBombPassages() || ($items->has('ScrewAttack') && $items->has('SpaceJump')))
+				&& ($items->has('Morph') || $items->hasEnergyReserves(5));
+		};
+
+		$this->can_complete = function($locations, $items) {
+			return $this->canEnter($locations, $items) && $items->canUsePowerbombs() && $items->has('Super', 4) && $items->hasEnergyReserves(5);
+		};
+
+		$this->prize_location->setRequirements($this->can_complete);	
 
 		return $this;
 	}
 
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
-	 * within for Overworld Glitches Mode
+	 * within for Casual
 	 *
 	 * @return $this
 	 */
@@ -117,15 +166,15 @@ class East extends Region {
         });
 
         $this->locations["Energy Tank, Ridley"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerbombs() && $items->has('Super') && $items->has('Charge');
+			return $this->canEnter($locations, $items);
         });
 
         $this->can_enter = function($locations, $items) {
 			return $items->heatProof()
 				&&	(($this->world->getRegion('East Norfair')->canEnter($locations, $items)
-						&& $items->canUsePowerBombs()
+						&& $items->canUsePowerBombs()		
 						&& ($items->has('SpaceJump') && $items->has('Gravity')))
-					|| ($items->canAccessLowerNorfairPortal()
+					|| ($items->canAccessLowerNorfairPortal() 
 						&& $items->canDestroyBombWalls()
 						&& $items->has('Super')
 						&& $items->canUsePowerBombs()
@@ -134,11 +183,11 @@ class East extends Region {
         };
 
 		$this->can_complete = function($locations, $items) {
-			return $this->canEnter($locations, $items) && $items->canUsePowerbombs() && $items->has('Super') && $items->has('Charge');
+			return $this->canEnter($locations, $items) && $items->canUsePowerbombs() && $items->has('Super', 6) && $items->has('Charge') && $this->has('Wave') && $this->has('Ice') && $this-has('Spazer') && $items->hasEnergyReserves(10);
 		};
 
 		$this->prize_location->setRequirements($this->can_complete);
-
+		
 		return $this;
 	}
 }
