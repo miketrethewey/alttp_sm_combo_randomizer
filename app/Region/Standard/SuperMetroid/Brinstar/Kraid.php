@@ -46,7 +46,6 @@ class Kraid extends Region {
 		return $this;
 	}
 
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -54,26 +53,31 @@ class Kraid extends Region {
 	 * @return $this
 	 */
 	public function initTournament() {
-
+        
         $this->locations["Missile (Kraid)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
         });
-
+        
         $this->can_enter = function($locations, $items) {
             return ($items->canDestroyBombWalls() || $items->has('SpeedBooster') || $items->canAccessNorfairPortal())
                 && ($items->has('Super') && $items->has('Morph'))
                 && $items->canPassBombPassages();
 		};
-
 		$this->can_complete = function($locations, $items) {
 			return $this->canEnter($locations, $items);
 		};
-
 		$this->prize_location->setRequirements($this->can_complete);
-
 		return $this;
 	}
-
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal Mode
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+		return $this->initTournament();
+	}
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode

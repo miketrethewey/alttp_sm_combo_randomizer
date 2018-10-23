@@ -609,7 +609,94 @@ class ItemCollection extends Collection {
 			|| $this->has('Bottle')
 			|| $this->has('BottleWithGoldBee');
 	}
+	
+	public function canAccessWesternGreenBrinstar()
+	{
+		// You can enter Green Brinstar from Pink Brinstar, or from Western Crateria.
+		// If coming from Western Crateria, missiles or any beam above Power Beam is required to get through the Pirates.
+		// If coming from Pink Brinstar, no red doors are in the way. But there's no way to tell which way you're coming from
+		switch($this->world->getSMLogic())
+		{
+			case 'Casual':
+				return ($items->canDestroyBombWalls() || $items->canPassBombPassages()) && $items->canOpenRedDoors();
+			case 'Normal':
+			case 'Tournament':
+			default:
+				return ($items->canDashSM() || $items->canDestroyBombWalls() || $items->canPassBombPassages()) && $items->canOpenRedDoors();
+		}
+	}
+	
+	public function canAccessEasternGreenBrinstar()
+	{
+		// This is the two rooms between Pink Brinstar and Red Brinstar, affectionately called "Green Hill Zone" and "Noob Bridge".
+		// There are three ways into this section, through Pink Brinstar, Red Brinstar, or Blue Brinstar.
+		// Blue requires Morph, Power Bombs, and some way to kill 3 Mega Sidehoppers.
+		// Red requires Morph, Power Bombs, and either Wave Beam or GGG.
+		// Pink merely requires a Super and Morph
+		switch($this->world->getSMLogic())
+		{
+			case 'Casual':
+				return $items->canUsePowerBombs() && $items->canOpenRedDoors() && $items->has('Wave') && $items->canOpenGreenDoors();
+			case 'Normal':
+			case 'Tournament':
+			default:
+				return $items->canUsePowerBombs() && $items->canOpenGreenDoors();
+		}
+	}
 
+	public function canAccessPinkBrinstar()
+	{
+		// You can enter Pink Brinstar from Green Brinstar, either direction.
+		return $items->canOpenRedDoors();
+	}
+	
+	public function canAccessRedBrinstar()
+	{
+		// You can enter Red Brinstar from either Green Brinstar, the Landing Site in Crateria, or from Kraid/Norfair.
+		switch($this->world->getSMLogic())
+		{
+			case 'Casual':
+				return $items->canUsePowerBombs();
+			case 'Normal':
+			case 'Tournament':
+			default:
+				return ($items->canDashSM() || $items->canDestroyBombWalls() || $items->canPassBombPassages()) && $items->canOpenRedDoors() && $items->canOpenGreenDoors();
+		}
+	}
+	
+	/* Requirements for being able to get to Crocomire and exit his area
+	* We will account for coming from both sides, which will be clearly spelled out below
+	* v6.1 of Croc logic
+	* Morphless Croc involves going through Worst Room in the Game, up through Mickey Mouse, and then back to the elevator to get to Lava Dive, which then goes to either the grapple maw room, or Bubble Mountain to the blue gate
+	* Obvioulsy that is a long trek, so a minimum of 7 energy tanks is required to progress that way, if it involves Crystal Flash
+	*
+	* @return bool
+	*/
+	public function canEnterAndLeaveCrocomire()
+	{
+		switch($this->world->getSMLogic())
+		{
+			case 'Casual':
+				return $items->has('Wave') && $items->has('Super') && $items->has('Varia') && $items->has('Charge')
+				&& ((($items->canIbj() || $items->has('HiJump') || $items->has('Ice') || $items->has('SpaceJump'))   // this one takes us through Cathedral and Bubble Mountain to the blue gate to Croc
+				|| ($items->has('SpeedBooster') || $items->canUsePowerBombs())));  // this one takes us through either the Super Door to the Croc speedway, or the speedway to the blue gate next to Croc
+			// Lower Norair's portal is not considered on Casual
+			case 'Normal':
+				return $items->has('Super', 2) && $items->has('Missile', 3)
+				&& (((($items->hasEnergyReserves(5) || ($items->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($items->has('Varia') && $items-hasEnergyReserves(2)))
+				&& $items->canPassBombPassages() && ($items->canIbj() || $items->has('HiJump') || $items->has('Ice')))  // this takes us through Cathedral and Bubble Mountain
+				|| ($items->has('SpeedBooster') && $items->canUsePowerBombs() && $items->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
+				|| ($items->canAccessLowerNorfairPortal() && $items->canFlySM() && $items->canDestroyBombWalls() && ((($items-hasEnergyReserves(8) && $items->canCrystalFlash()) || ($items->hasEnergyReserves(2) && $items->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
+			case 'Tournament':
+			default:
+				return $items->has('Super', 2)
+				&& (((($items->hasEnergyReserves(3) || ($items->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($items->has('Varia') && $items-hasEnergyReserves(1)))
+				&& $items->canPassBombPassages() && ($items->canIbj() || $items->has('HiJump') || $items->has('Ice') || $items->canSpringBallJump()))  // this takes us through Cathedral and Bubble Mountain
+				|| ($items->has('SpeedBooster') && $items->canUsePowerBombs() && $items->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
+				|| ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls() && ($items->canSpringBallJump() || $items->canFlySM()) && ((($items-hasEnergyReserves(7) && $items->canCrystalFlash()) || ($items->hasEnergyReserves(2) && $items->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
+		}
+	}
+	
 	public function canAccessDeathMountainPortal()
 	{
 		return (($this->canDestroyBombWalls() || $this->canDashSM())
@@ -684,9 +771,9 @@ class ItemCollection extends Collection {
 	{
 		return $this->has('Varia');
 	}
-	public function canHellRun()
+	public function canHellRun(int $amount = 5)
 	{
-		return $this->heatProof() || $this->hasEnergyReserves(5);
+		return $this->heatProof() || $this->hasEnergyReserves($amount);
 	}
 	public function canHiJump()
 	{

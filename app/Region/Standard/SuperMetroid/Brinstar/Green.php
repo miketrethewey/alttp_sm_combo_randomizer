@@ -51,7 +51,6 @@ class Green extends Region {
 		return $this;
 	}
 
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament mode
@@ -62,44 +61,72 @@ class Green extends Region {
 		$this->locations["Power Bomb (green Brinstar bottom)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Missile (green Brinstar below super missile)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages() && $items->canOpenRedDoors();
 		});
-
         $this->locations["Super Missile (green Brinstar top)"]->setRequirements(function($location, $items) {
             return $items->canOpenRedDoors()
                 && ($items->has('Morph') || $items->has('SpeedBooster'));
 		});
-
         $this->locations["Reserve Tank, Brinstar"]->setRequirements(function($location, $items) {
             return $items->canOpenRedDoors()
                 && ($items->has('Morph') || $items->has('SpeedBooster'));
 		});
-
         $this->locations["Missile (green Brinstar behind missile)"]->setRequirements(function($location, $items) {
 			return ($items->canPassBombPassages() || ($items->has('Morph') && $items->has('ScrewAttack'))) && $items->canOpenRedDoors();
 		});
-
         $this->locations["Missile (green Brinstar behind reserve tank)"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors() && $items->has('Morph');
 		});
-
         $this->locations["Energy Tank, Etecoons"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Super Missile (green Brinstar bottom)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->has('Super');
 		});
-
         $this->can_enter = function($locations, $items) {
 			return $items->canDestroyBombWalls() || $items->has('SpeedBooster');
 		};
-
 		return $this;
 	}
-
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal Mode
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+		$this->locations["Power Bomb (green Brinstar bottom)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs();
+		});
+        $this->locations["Missile (green Brinstar below super missile)"]->setRequirements(function($location, $items) {
+			return $items->canPassBombPassages() && $items->canOpenRedDoors();
+		});
+        $this->locations["Super Missile (green Brinstar top)"]->setRequirements(function($location, $items) {
+             return $items->canOpenRedDoors()
+                && ($items->has('Morph') || $items->has('SpeedBooster'));
+		});
+        $this->locations["Reserve Tank, Brinstar"]->setRequirements(function($location, $items) {
+             return $items->canOpenRedDoors()
+                && ($items->has('Morph') || $items->has('SpeedBooster'));
+		});
+        $this->locations["Missile (green Brinstar behind missile)"]->setRequirements(function($location, $items) {
+			return ($items->has('SpeedBooster') || $items->has('Morph')) && $items->canPassBombPassages() && $items->canOpenRedDoors();
+		});
+        $this->locations["Missile (green Brinstar behind reserve tank)"]->setRequirements(function($location, $items) {
+			return $items->has('SpeedBooster') && $items->canOpenRedDoors() && $items->has('Morph');
+		});
+        $this->locations["Energy Tank, Etecoons"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs();
+		});
+        $this->locations["Super Missile (green Brinstar bottom)"]->setRequirements(function($location, $items) {
+			return $items->canUsePowerBombs() && $items->has('Super');
+		});
+        $this->can_enter = function($locations, $items) {
+			return $items->canDestroyBombWalls() || $items->has('SpeedBooster');
+		};
+		return $this;
+	}
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -110,39 +137,30 @@ class Green extends Region {
 		$this->locations["Power Bomb (green Brinstar bottom)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Missile (green Brinstar below super missile)"]->setRequirements(function($location, $items) {
 			return $items->canPassBombPassages() && $items->canOpenRedDoors();
 		});
-
         $this->locations["Super Missile (green Brinstar top)"]->setRequirements(function($location, $items) {
             return $items->has('SpeedBooster') && $items->canOpenRedDoors();
 		});
-
         $this->locations["Reserve Tank, Brinstar"]->setRequirements(function($location, $items) {
             return $items->has('SpeedBooster') && $items->canOpenRedDoors();
 		});
-
         $this->locations["Missile (green Brinstar behind missile)"]->setRequirements(function($location, $items) {
 			return $items->has('SpeedBooster') && $items->canPassBombPassages() && $items->canOpenRedDoors();
 		});
-
         $this->locations["Missile (green Brinstar behind reserve tank)"]->setRequirements(function($location, $items) {
 			return $items->has('SpeedBooster') && $items->canOpenRedDoors() && $items->has('Morph');
 		});
-
         $this->locations["Energy Tank, Etecoons"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs();
 		});
-
         $this->locations["Super Missile (green Brinstar bottom)"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->has('Super');
 		});
-
         $this->can_enter = function($locations, $items) {
 			return $items->canDestroyBombWalls() || $items->has('SpeedBooster');
 		};
-
 		return $this;
 	}
 }
