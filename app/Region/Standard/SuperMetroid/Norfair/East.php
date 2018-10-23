@@ -52,8 +52,6 @@ class East extends Region {
         $this->locations["Wave Beam"]->setItem(Item::get('Wave'));        /* Speed Booster was listed here again! */
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -61,31 +59,24 @@ class East extends Region {
 	 * @return $this
 	 */
 	public function initTournament() {
-
         $this->locations["Missile (lava room)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph');
         });
-
         $this->locations["Reserve Tank, Norfair"]->setRequirements(function($location, $items) {
             return $items->has('Morph') && $items->has('Super');
         });
-
         $this->locations["Missile (Norfair Reserve Tank)"]->setRequirements(function($location, $items) {
             return $items->has('Morph') && $items->has('Super');
         });
-
         $this->locations["Missile (bubble Norfair green door)"]->setRequirements(function($location, $items) {
             return $items->has('Super');
         });
-
         $this->locations["Missile (Speed Booster)"]->setRequirements(function($location, $items) {
             return $items->has('Super');
         });
-
         $this->locations["Speed Booster"]->setRequirements(function($location, $items) {
             return $items->has('Super');
         });
-
 	    $this->locations["Wave Beam"]->setRequirements(function($location, $items) {
             return $items->canOpenRedDoors() && ($items->has('Morph') || $items->has('Grapple') || ($items->has('HiJump') && $items->heatProof()) || $items->has('SpaceJump'));
         });
@@ -98,10 +89,48 @@ class East extends Region {
                 && ($items->has('Super') && ($items->canFlySM() || $items->has('HiJump') || $items->canSpringBallJump() || ($items->has('Varia') && ($items->has('Ice') || $items->has('SpeedBooster'))))
                  || ($items->has('SpeedBooster') && $items->canUsePowerBombs()));
         };
-
+        
 		return $this;
 	}
 
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+        $this->locations["Missile (lava room)"]->setRequirements(function($location, $items) {
+			return $items->has('Morph');
+        });
+        $this->locations["Reserve Tank, Norfair"]->setRequirements(function($location, $items) {
+            return $items->has('Morph') && $items->has('Super');
+        });
+        $this->locations["Missile (Norfair Reserve Tank)"]->setRequirements(function($location, $items) {
+            return $items->has('Morph') && $items->has('Super');
+        });
+        $this->locations["Missile (bubble Norfair green door)"]->setRequirements(function($location, $items) {
+            return $items->has('Super');
+        });
+        $this->locations["Missile (Speed Booster)"]->setRequirements(function($location, $items) {
+            return $items->has('Super');
+        });
+        $this->locations["Speed Booster"]->setRequirements(function($location, $items) {
+            return $items->has('Super');
+        });
+	    $this->locations["Wave Beam"]->setRequirements(function($location, $items) {
+            return $items->canOpenRedDoors() && ($items->has('Morph') || $items->has('Grapple') || ($items->has('HiJump') && $items->heatProof()) || $items->has('SpaceJump'));
+        });
+
+        $this->can_enter = function($locations, $items) {
+            return ((($items->canDestroyBombWalls() || $items->has('SpeedBooster')) && ($items->has('Super') && $items->has('Morph'))) || $items->canAccessNorfairPortal())
+                && $items->canHellRun() && ($items->has('Super') && ($items->canFlySM() || $items->has('HiJump') || ($items->has('Varia') && ($items->has('Ice') || $items->has('SpeedBooster'))))
+                 || ($items->has('SpeedBooster') && $items->canUsePowerBombs()));
+        };
+        
+		return $this;
+	}
+	
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -112,37 +141,30 @@ class East extends Region {
         $this->locations["Missile (lava room)"]->setRequirements(function($location, $items) {
 			return $items->has('Morph');
         });
-
         $this->locations["Reserve Tank, Norfair"]->setRequirements(function($location, $items) {
             return $items->has('Morph')
                 && ($items->canFlySM() || ($items->has('Grapple') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice'));
         });
-
         $this->locations["Missile (Norfair Reserve Tank)"]->setRequirements(function($location, $items) {
             return $items->has('Morph')
                 && ($items->canFlySM() || ($items->has('Grapple') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice'));
         });
-
         $this->locations["Missile (bubble Norfair green door)"]->setRequirements(function($location, $items) {
             return $items->canFlySM() || ($items->has('Grapple') && $items->has('Morph') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice');
         });
-
         $this->locations["Missile (Speed Booster)"]->setRequirements(function($location, $items) {
             return $items->canFlySM() || ($items->has('Morph') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice');
         });
-
         $this->locations["Speed Booster"]->setRequirements(function($location, $items) {
             return $items->canFlySM() || ($items->has('Morph') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice');
         });
-
 	    $this->locations["Wave Beam"]->setRequirements(function($location, $items) {
             return $items->has('Morph') && ($items->canFlySM() || ($items->has('Morph') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice'));
         });
-
         $this->locations["Missile (Wave Beam)"]->setRequirements(function($location, $items) {
             return ($items->canFlySM() || ($items->has('Morph') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice'));
         });
-
+        
         $this->can_enter = function($locations, $items) {
             return ((($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
                 && ($items->has('Super') && $items->has('Morph')))
@@ -151,7 +173,7 @@ class East extends Region {
                 && $items->has('Super')
                 && ($items->canFlySM() || $items->has('HiJump') || $items->has('SpeedBooster'));
         };
-
+        
 		return $this;
 	}
 }

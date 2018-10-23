@@ -44,8 +44,6 @@ class West extends Region {
 		$this->locations["Energy Tank (Hi-Jump Boots)"]->setItem(Item::get('ETank'));
 		return $this;
 	}
-
-
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Tournament
@@ -56,32 +54,58 @@ class West extends Region {
 		$this->locations["Ice Beam"]->setRequirements(function($location, $items) {
 			return $items->has('Super') && $items->has('Morph') && ($items->heatProof() || $items->hasEnergyReserves(3));
         });
-
         $this->locations["Missile (below Ice Beam)"]->setRequirements(function($location, $items) {
-			return ($items->has('Super') && $items->canUsePowerBombs() && ($items->hasEnergyReserves(3) || $items->heatProof())) || ($items->has('Varia') && $items->has('SpeedBooster') && $items->has('Super'));
+			return ($items->has('Super') && $items->canUsePowerBombs() && $items->hasEnergyReserves(1))
+			|| ($items->canEnterAndLeaveCrocomire() && $items->has('SpeedBooster'));
         });
-
 		$this->locations["Energy Tank (Hi-Jump Boots)"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors();
         });
-
         $this->locations["Hi-Jump Boots"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors() && $items->canPassBombPassages();
         });
-
         $this->locations["Missile (Hi-Jump Boots)"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors() && $items->has('Morph');
         });
 
         $this->can_enter = function($locations, $items) {
-            return (($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
-                && ($items->has('Super') && $items->has('Morph')))
-                || $items->canAccessNorfairPortal();
+            return $items->canAccessDeathMountainPortal() || $items->canAccessNorfairPortal();
         };
-
+        
 		return $this;
 	}
 
+	/**
+	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
+	 * within for Normal difficulty
+	 *
+	 * @return $this
+	 */
+	public function initNormal() {
+		$this->locations["Ice Beam"]->setRequirements(function($location, $items) {
+			return $items->has('Super') && $items->has('Morph') && ($items->heatProof() || $items->hasEnergyReserves(3));
+        });
+        $this->locations["Missile (below Ice Beam)"]->setRequirements(function($location, $items) {
+			return ($items->has('Super') && $items->canUsePowerBombs() && $items->hasEnergyReserves(1))
+			|| ($items->canEnterAndLeaveCrocomire() && $items->has('SpeedBooster'));
+        });
+		$this->locations["Energy Tank (Hi-Jump Boots)"]->setRequirements(function($location, $items) {
+			return $items->canOpenRedDoors();
+        });
+        $this->locations["Hi-Jump Boots"]->setRequirements(function($location, $items) {
+			return $items->canOpenRedDoors() && $items->canPassBombPassages();
+        });
+        $this->locations["Missile (Hi-Jump Boots)"]->setRequirements(function($location, $items) {
+			return $items->canOpenRedDoors() && $items->has('Morph');
+        });
+
+        $this->can_enter = function($locations, $items) {
+            return $items->canAccessDeathMountainPortal() || $items->canAccessNorfairPortal();
+        };
+        
+		return $this;
+	}
+	
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -92,29 +116,23 @@ class West extends Region {
 		$this->locations["Ice Beam"]->setRequirements(function($location, $items) {
 			return $items->has('Super') && $items->canPassBombPassages() && $items->has('Varia') && $items->has('SpeedBooster');
         });
-
         $this->locations["Missile (below Ice Beam)"]->setRequirements(function($location, $items) {
 			return $items->has('Super') && $items->canUsePowerBombs() && $items->has('Varia') && $items->has('SpeedBooster');
         });
-
 		$this->locations["Energy Tank (Hi-Jump Boots)"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors();
         });
-
         $this->locations["Hi-Jump Boots"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors() && $items->canPassBombPassages();
         });
-
         $this->locations["Missile (Hi-Jump Boots)"]->setRequirements(function($location, $items) {
 			return $items->canOpenRedDoors() && $items->has('Morph');
         });
 
         $this->can_enter = function($locations, $items) {
-            return (($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
-                && ($items->has('Super') && $items->has('Morph')))
-                || $items->canAccessNorfairPortal();
+            return $items->canAccessDeathMountainPortal() || $items->canAccessNorfairPortal();
         };
-
+        
 		return $this;
 	}
 }
