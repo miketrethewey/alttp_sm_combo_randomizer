@@ -47,6 +47,30 @@ class Open extends World {
 			'Ganons Tower' => new Region\Standard\GanonsTower($this),
 			'Medallions' => new Region\Standard\Medallions($this),
 			'Fountains' => new Region\Standard\Fountains($this),
+			
+			'Central Crateria' => new Region\Standard\SuperMetroid\Crateria\Central($this),
+			'West Crateria' => new Region\Standard\SuperMetroid\Crateria\West($this),
+			'East Crateria' => new Region\Standard\SuperMetroid\Crateria\East($this),
+
+			'Green Brinstar' => new Region\Standard\SuperMetroid\Brinstar\Green($this),
+			'Pink Brinstar' => new Region\Standard\SuperMetroid\Brinstar\Pink($this),
+			'Blue Brinstar' => new Region\Standard\SuperMetroid\Brinstar\Blue($this),
+			'Red Brinstar' => new Region\Standard\SuperMetroid\Brinstar\Red($this),
+			'Kraids Lair Brinstar' => new Region\Standard\SuperMetroid\Brinstar\Kraid($this),
+
+			'West Norfair' => new Region\Standard\SuperMetroid\Norfair\West($this),
+			'East Norfair' => new Region\Standard\SuperMetroid\Norfair\East($this),
+			'Crocomires Lair Norfair' => new Region\Standard\SuperMetroid\Norfair\Crocomire($this),
+
+			'West Lower Norfair' => new Region\Standard\SuperMetroid\LowerNorfair\West($this),
+			'East Lower Norfair' => new Region\Standard\SuperMetroid\LowerNorfair\East($this),
+
+			'Wrecked Ship' => new Region\Standard\SuperMetroid\WreckedShip\WreckedShip($this),
+
+			'Outer Maridia' => new Region\Standard\SuperMetroid\Maridia\Outer($this),
+			'Inner Maridia' => new Region\Standard\SuperMetroid\Maridia\Inner($this),
+
+			'Tourian' => new Region\Standard\SuperMetroid\Tourian($this),
 		];
 
 		parent::__construct($difficulty, $logic, $goal, $variation);
