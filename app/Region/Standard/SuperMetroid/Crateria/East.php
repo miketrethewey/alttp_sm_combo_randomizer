@@ -78,9 +78,9 @@ class East extends Region {
 			return $items->has('Super') && $items->canPassBombPassages();
 		});
         $this->can_enter = function($locations, $items) {
-			return ($items->canUsePowerBombs() && $items->has('Super'))
-				|| ($items->canAccessNorfairPortal() && $items->canUsePowerBombs() && ($items->has('Ice') || $items->has('HiJump') || $items->canFlySM()))
-				|| ($items->canAccessMaridiaPortal() && $items->has('HiJump') && $items->has('Super'));
+			return (($items->canUsePowerBombs() && $items->has('Super') && ($items->has('SpeedBooster') || $items->has('Grapple') || $items->has('SpaceJump')))  // if coming from Central/Landing Site
+				|| ($items->canAccessNorfairPortal() && $items->canUsePowerBombs() && ($items->has('Ice') || $items->has('HiJump') || $items->canFlySM()))  // if coming from Red Tower in Brinstar
+				|| ($items->canAccessMaridiaPortal() && $items->has('HiJump') && $items->has('Super')));  // if coming from Forgotten Highway, or through Maridia to the Landing Site
 		};
 		return $this;
 	}

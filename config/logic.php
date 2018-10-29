@@ -89,7 +89,7 @@ canCWJ - may move down depending on where stuff lands
 canSpongeBath - access to spikey room of death
 canDamageBoostXRayScopeAccess - getting to X-Ray using D-boosts
 
--- Super Metroid Banned Tech -- 
+-- Super Metroid Banned Tech/Glitches -- 
 canXRayClimbOOB
 canSpaceTime
 canGTCode
