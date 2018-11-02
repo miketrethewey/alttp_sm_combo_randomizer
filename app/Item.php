@@ -7,6 +7,9 @@ use ALttP\Support\ItemCollection;
  */
 class Item {
 	protected $bytes;
+	protected $visiblePlm;
+	protected $hiddenPlm;
+	protected $chozoPlm;
 	protected $address;
 	protected $name;
 	protected $nice_name;
@@ -372,6 +375,47 @@ class Item {
 		return $this->nice_name;
 	}
 
+	/**
+	 * Get the bytes to write
+	 *
+	 * @return array
+	 */
+	public function getVisibleBytes() {
+		if($this->visiblePlm == null)
+		{
+			echo("Null Visible PLM");
+		}
+		$bytes = [$this->visiblePlm & 0xFF, ($this->visiblePlm >> 8) & 0xFF]; 
+		return $bytes;
+	}
+
+	/**
+	 * Get the bytes to write
+	 *
+	 * @return array
+	 */
+	public function getHiddenBytes() {
+		if($this->hiddenPlm == null)
+		{
+			echo("Null Hidden PLM");
+		}
+
+		return [$this->hiddenPlm & 0xFF, ($this->hiddenPlm >> 8) & 0xFF];
+	}
+
+    /**
+	 * Get the bytes to write
+	 *
+	 * @return array
+	 */
+	public function getChozoBytes() {
+		if($this->chozoPlm == null)
+		{
+			echo("Null Chozo PLM");
+		}
+		return [$this->chozoPlm & 0xFF, ($this->chozoPlm >> 8) & 0xFF];
+	}
+	
 	/**
 	 * Get the bytes to write
 	 *

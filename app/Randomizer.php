@@ -462,7 +462,7 @@ class Randomizer {
 	public function fillPrizes(World $world, $attempts = 5) : self {
 		$prize_locations = $world->getLocations()->filter(function($location) {
 			return $location instanceof Location\Prize;
-		})->randomCollection(15);
+		})->randomCollection(20);  // this is 15 in LttP. We had to add 5 here because of the 5 added events. Kraid, Phantoon, Draygon, Ridley, and Mother Brain
 
 		$crystal_locations = $prize_locations->filter(function($location) {
 			return $location instanceof Location\Prize\Crystal;

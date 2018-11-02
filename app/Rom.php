@@ -2,6 +2,7 @@
 
 use ALttP\Support\Credits;
 use ALttP\Support\ItemCollection;
+use ALttP\Support\Dialog;
 use ALttP\Text;
 use Log;
 
@@ -17,6 +18,11 @@ class Rom {
 	private $credits;
 	private $text;
 	protected $rom;
+	
+	private $texts;
+	private $stringTable;
+	private $converter;
+	
 	protected $write_log = [];
 
 	/**
@@ -58,6 +64,11 @@ class Rom {
 
 		$this->rom = fopen($this->tmp_file, "r+");
 		$this->credits = new Credits;
+		
+		$this->texts = new Text;
+		$this->stringTable = $this->texts->en();
+		$this->converter = new Dialog;
+		
 		$this->text = new Text;
 		$this->text->removeUnwanted();
 	}
@@ -1326,7 +1337,16 @@ class Rom {
 
 		return $this;
 	}
-
+	
+	public function commitTextChanges() : self {
+		$vanillaTextOffset = 0xE0000;
+    
+    	$bytes = $this->texts->getBytes($this->stringTable);
+			$data = pack('C*', ...$bytes);
+		$this->write($vanillaTextOffset, $data);
+    
+    	return $this;
+	}
 	/**
 	 * Commit the text table to rom
 	 *
@@ -2722,14 +2742,14 @@ class Rom {
 
 		$this->write(snes_to_pc(0x06B2AB), pack('C*', 0xF0, 0xE1, 0x05)); // frog pickup on contact
 
-		$this->text->setString('sign_path_to_death_mountain', "→ Bumper Cave\nYou need Cape and Mirror, but not Hookshot");
+		$this->text->setString('sign_path_to_death_mountain', "? Bumper Cave\nYou need Cape and Mirror, but not Hookshot");
 		$this->text->setString('sign_bumper_cave', "Cave to lost, old man.\nGood luck.");
-		$this->text->setString('sign_east_of_bomb_shop', "\n← Your House");
-		$this->text->setString('sign_east_of_links_house', "\n← Bomb Shoppe");
+		$this->text->setString('sign_east_of_bomb_shop', "\n? Your House");
+		$this->text->setString('sign_east_of_links_house', "\n? Bomb Shoppe");
 		$this->text->setString('kiki_leaving_screen', "{NOTEXT}", False);
 
-		$this->text->setString('menu_start_2', "{MENU}\n{SPEED0}\n≥@'s house\n Dark Chapel\n{CHOICE3}", false);
-		$this->text->setString('menu_start_3', "{MENU}\n{SPEED0}\n≥@'s house\n Dark Chapel\n Dark Mountain\n{CHOICE2}", false);
+		$this->text->setString('menu_start_2', "{MENU}\n{SPEED0}\n=@'s house\n Dark Chapel\n{CHOICE3}", false);
+		$this->text->setString('menu_start_3', "{MENU}\n{SPEED0}\n=@'s house\n Dark Chapel\n Dark Mountain\n{CHOICE2}", false);
 
 		$this->text->setString('intro_main', "{INTRO}\n Episode  III\n{PAUSE3}\n A Link to\n   the Past\n"
 				. "{PAUSE3}\nInverted\n  Randomizer\n{PAUSE3}\nAfter mostly disregarding what happened in the first two games,\n"

@@ -13,6 +13,7 @@ abstract class World {
 	protected $difficulty;
 	protected $variation;
 	protected $logic;
+	protected $sm_logic;
 	protected $goal;
 	protected $regions = [];
 	protected $locations;
@@ -34,10 +35,11 @@ abstract class World {
 	 *
 	 * @return void
 	 */
-	public function __construct($difficulty = 'normal', $logic = 'NoGlitches', $goal = 'ganon', $variation = 'none') {
+	public function __construct($difficulty = 'normal', $logic = 'NoGlitches', $sm_logic = 'Normal', $goal = 'ganon', $variation = 'none') {
 		$this->difficulty = $difficulty;
 		$this->variation = $variation;
 		$this->logic = $logic;
+		$this->sm_logic = $sm_logic;
 		$this->goal = $goal;
 		$this->pre_collected_items = new ItemCollection([], $this);
 
@@ -71,15 +73,15 @@ abstract class World {
 		};
 	}
 
-	static public function factory(string $type = null, $difficulty = 'normal', $logic = 'NoGlitches', $goal = 'ganon', $variation = 'none') {
+	static public function factory(string $type = null, $difficulty = 'normal', $logic = 'NoGlitches', $sm_logic = 'Normal', $goal = 'ganon', $variation = 'none') {
 		switch ($type) {
 			case 'open':
-				return new World\Open($difficulty, $logic, $goal, $variation);
+				return new World\Open($difficulty, $logic, $sm_logic, $goal, $variation);
 			case 'inverted':
-				return new World\Inverted($difficulty, $logic, $goal, $variation);
+				return new World\Inverted($difficulty, $logic, $sm_logic, $goal, $variation);
 			case 'standard':
 			default:
-				return new World\Standard($difficulty, $logic, $goal, $variation);
+				return new World\Standard($difficulty, $logic, $sm_logic, $goal, $variation);
 		}
 	}
 

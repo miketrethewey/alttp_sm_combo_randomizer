@@ -654,15 +654,15 @@ class ItemCollection extends Collection {
  		switch($this->world->getSMLogic())
  		{
  			case 'Casual':
- 				return $this->has('Varia') && $items->has('Charge') && $this->has('Super', 4) && $this->canUsePowerBombs() && $this->has('Gravity')
- 				&& $this->has('SpaceJump') && $items->has('Ice') && $items->has('Spazer') && $items->has('Wave') && $items->has('PowerBomb', 3);
+ 				return $this->has('Varia') && $this->has('Charge') && $this->has('Super', 4) && $this->canUsePowerBombs() && $this->has('Gravity')
+ 				&& $this->has('SpaceJump') && $this->has('Ice') && $this->has('Spazer') && $this->has('Wave') && $this->has('PowerBomb', 3);
  				// Casual logic will dictate that we need to fight Golden Torizo, so a minimum of 20 Supers and Charge/Ice/Spazer/Wave will be needed for the fight,
  				// as well as 15 PBs to get around all of the bombable blocks in Lower Norfair
  			case 'Normal':
- 				return $items->has('Varia') && $items->hasEnergyReserves(3) && $items->has('Super', 2) && $items->canUsePowerBombs() && ($this->has('HiJump') || $this->has('Gravity'));
+ 				return $this->has('Varia') && $this->hasEnergyReserves(3) && $this->has('Super', 2) && $this->canUsePowerBombs() && ($this->has('HiJump') || $this->has('Gravity'));
  			case 'Tournament':
  			default:
- 				return $items->has('Varia') && $items->hasEnergyReserves(2) && $items->has('Super') && $items->canUsePowerBombs() && ($this->has('HiJump') || $this->has('Gravity'));
+ 				return $this->has('Varia') && $this->hasEnergyReserves(2) && $this->has('Super') && $this->canUsePowerBombs() && ($this->has('HiJump') || $this->has('Gravity'));
  		}
  	}
  	
@@ -714,10 +714,10 @@ class ItemCollection extends Collection {
  		switch($this->world->getSMLogic())
  		{
  			case 'Casual':
- 				return $this->canUsePowerBombs() && $this->has('Charge') && $this->has('PowerBomb', 3) && $this->has('Super') && $this->has('Gravity') && $this->has('SpeedBooster') && $this->canFlySM() && $this->has('MoonPearl')&& ($items->has('Flippers') || $items->has('MagicMirror'));
+ 				return $this->canUsePowerBombs() && $this->has('Charge') && $this->has('PowerBomb', 3) && $this->has('Super') && $this->has('Gravity') && $this->has('SpeedBooster') && $this->canFlySM() && $this->has('MoonPearl')&& ($this->has('Flippers') || $this->has('MagicMirror'));
  			case 'Tournament':
  			case 'Normal':
- 				return $this->canUsePowerBombs() && $this->has('MoonPearl') && ($items->has('Flippers') || $items->has('MagicMirror'))
+ 				return $this->canUsePowerBombs() && $this->has('MoonPearl') && ($this->has('Flippers') || $this->has('MagicMirror'))
  					&& $this->has('Super', 2) && $this->has('Missile', 4)
  					&& ($this->has('Gravity') || ($this->has('HiJump') && $this->has('Ice') && $this->has('Grapple')))
  					&& ($this->has('Ice') || ($this->has('SpeedBooster') && $this->has('Gravity')));
@@ -733,14 +733,14 @@ class ItemCollection extends Collection {
  		switch($this->world->getSMLogic())
  		{
  			case 'Casual':
- 				return $items->canUsePowerBombs() && $items->has('PowerBomb', 2) && $this->has('Super', 2) && $this->has('Missile', 5)
- 				&& (($this->hasEnergyReserves(5) || ($this->hasEnergyReserves(3) && $this->has('Varia'))) && ($items->has('SpeedBooster') || $items->has('Grapple') || $items->has('SpaceJump') || $items->canSpringBallJump()));
+ 				return $this->canUsePowerBombs() && $this->has('PowerBomb', 2) && $this->has('Super', 2) && $this->has('Missile', 5)
+ 				&& (($this->hasEnergyReserves(5) || ($this->hasEnergyReserves(3) && $this->has('Varia'))) && ($this->has('SpeedBooster') || $this->has('Grapple') || $this->has('SpaceJump') || $items->canSpringBallJump()));
  			case 'Normal':
  			case 'Tournament':
  			default:
  				return $this->has('Super') && $this->has('Missile', 2)
- 				&& (($items->canUsePowerBombs() && $this->hasEnergyReserves(3) && ($items->has('SpeedBooster') || $items->has('Grapple') || $items->canSpringBallJump()))
- 				|| ($items->hasEnergyReserves(2) && $items->canAccessMaridiaPortal() && $items->canPassBombPassages()));
+ 				&& (($this->canUsePowerBombs() && $this->hasEnergyReserves(3) && ($this->has('SpeedBooster') || $this->has('Grapple') || $items->canSpringBallJump()))
+ 				|| ($this->hasEnergyReserves(2) && $items->canAccessMaridiaPortal() && $items->canPassBombPassages()));
  		}
  	}
  	
@@ -779,23 +779,23 @@ class ItemCollection extends Collection {
  		switch($this->world->getSMLogic())
  		{
  			case 'Casual':
- 				return $items->has('Wave') && $items->has('Super') && $items->has('Varia') && $items->has('Charge')
- 				&& ((($items->canIbj() || $items->has('HiJump') || $items->has('Ice') || $items->has('SpaceJump'))   // this one takes us through Cathedral and Bubble Mountain to the blue gate to Croc
- 				   || ($items->has('SpeedBooster') || $items->canUsePowerBombs())));  // this one takes us through either the Super Door to the Croc speedway, or the speedway to the blue gate next to Croc
+ 				return $this->has('Wave') && $this->has('Super') && $this->has('Varia') && $this->has('Charge')
+ 				&& ((($items->canIbj() || $this->has('HiJump') || $this->has('Ice') || $this->has('SpaceJump'))   // this one takes us through Cathedral and Bubble Mountain to the blue gate to Croc
+ 				   || ($this->has('SpeedBooster') || $this->canUsePowerBombs())));  // this one takes us through either the Super Door to the Croc speedway, or the speedway to the blue gate next to Croc
  			// Lower Norair's portal is not considered on Casual
  			case 'Normal':
- 				return $items->has('Super', 2) && $items->has('Missile', 3)
- 				&& (((($items->hasEnergyReserves(5) || ($items->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($items->has('Varia') && $items-hasEnergyReserves(2)))
- 				   && $items->canPassBombPassages() && ($items->canIbj() || $items->has('HiJump') || $items->has('Ice')))  // this takes us through Cathedral and Bubble Mountain
- 				   || ($items->has('SpeedBooster') && $items->canUsePowerBombs() && $items->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
- 				   || ($items->canAccessLowerNorfairPortal() && $items->canFlySM() && $items->canDestroyBombWalls() && ((($items-hasEnergyReserves(8) && $items->canCrystalFlash()) || ($items->hasEnergyReserves(2) && $items->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
+ 				return $this->has('Super', 2) && $this->has('Missile', 3)
+ 				&& (((($this->hasEnergyReserves(5) || ($this->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($this->has('Varia') && $items-hasEnergyReserves(2)))
+ 				   && $items->canPassBombPassages() && ($items->canIbj() || $this->has('HiJump') || $this->has('Ice')))  // this takes us through Cathedral and Bubble Mountain
+ 				   || ($this->has('SpeedBooster') && $this->canUsePowerBombs() && $this->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
+ 				   || ($items->canAccessLowerNorfairPortal() && $items->canFlySM() && $items->canDestroyBombWalls() && ((($items-hasEnergyReserves(8) && $items->canCrystalFlash()) || ($this->hasEnergyReserves(2) && $this->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
  			case 'Tournament':
  			default:
- 				return $items->has('Super', 2)
- 				&& (((($items->hasEnergyReserves(3) || ($items->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($items->has('Varia') && $items-hasEnergyReserves(1)))
- 				   && $items->canPassBombPassages() && ($items->canIbj() || $items->has('HiJump') || $items->has('Ice') || $items->canSpringBallJump()))  // this takes us through Cathedral and Bubble Mountain
- 				   || ($items->has('SpeedBooster') && $items->canUsePowerBombs() && $items->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
- 				   || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls() && ($items->canSpringBallJump() || $items->canFlySM()) && ((($items-hasEnergyReserves(7) && $items->canCrystalFlash()) || ($items->hasEnergyReserves(2) && $items->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
+ 				return $this->has('Super', 2)
+ 				&& (((($this->hasEnergyReserves(3) || ($this->hasEnergyReserves(2) && $items->canCrystalFlash())) || ($this->has('Varia') && $items-hasEnergyReserves(1)))
+ 				   && $items->canPassBombPassages() && ($items->canIbj() || $this->has('HiJump') || $this->has('Ice') || $items->canSpringBallJump()))  // this takes us through Cathedral and Bubble Mountain
+ 				   || ($this->has('SpeedBooster') && $this->canUsePowerBombs() && $this->hasEnergyReserves(2))  // this takes us through the Croc speedway using the Ice Super Door, or the speedway to Bubble Mountain
+ 				   || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls() && ($items->canSpringBallJump() || $items->canFlySM()) && ((($items-hasEnergyReserves(7) && $items->canCrystalFlash()) || ($this->hasEnergyReserves(2) && $this->has('Varia'))))));  // this one takes us through the Misery Mire portal, back through the lava dive, and to the blue gate to Croc
  		}
  	}
  	public function canDefeatBotwoon()
@@ -815,11 +815,11 @@ class ItemCollection extends Collection {
  		switch($this->world->getSMLogic())
  		{
  			case 'Casual':
- 				return $this->canDefeatBotwoon() && $this->has('Gravity') && (($this->has('SpeedBooster') && $this->has('HiJump')) || $this->canFlySM()) && $items->has('Super');
+ 				return $this->canDefeatBotwoon() && $this->has('Gravity') && (($this->has('SpeedBooster') && $this->has('HiJump')) || $this->canFlySM()) && $this->has('Super');
  			case 'Tournament':
- 				return $items->has('Super') && ($this->canDefeatBotwoon() || $this->canAccessMaridiaPortal()) && $this->has('Grapple') && $items->has('Morph');
+ 				return $this->has('Super') && ($this->canDefeatBotwoon() || $this->canAccessMaridiaPortal()) && $this->has('Grapple') && $this->has('Morph');
  			case 'Normal':
- 				return $items->has('Super') && ($this->canDefeatBotwoon() || $this->canAccessMaridiaPortal()) && $this->has('Gravity');
+ 				return $this->has('Super') && ($this->canDefeatBotwoon() || $this->canAccessMaridiaPortal()) && $this->has('Gravity');
  			default:
  				return $this->canDefeatBotwoon() && $this->has('Gravity');
  		}
