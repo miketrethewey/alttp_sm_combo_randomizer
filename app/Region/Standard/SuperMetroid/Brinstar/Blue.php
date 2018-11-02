@@ -120,7 +120,7 @@ class Blue extends Region {
 			return $items->canUsePowerBombs() && $items->has('PowerBomb', 2);
 		});
         $this->locations["Energy Tank, Brinstar Ceiling"]->setRequirements(function($location, $items) {
-			return $items->has('HiJump') || ($items->has('SpeedBooster') && $items->canUsePowerBombs()) || $items->has('Ice');
+			return $items->has('HiJump') || $items->has('SpeedBooster');  // you can use Speed's velocity to get enough height to reach the item.
 		});		
 		return $this;
 	}

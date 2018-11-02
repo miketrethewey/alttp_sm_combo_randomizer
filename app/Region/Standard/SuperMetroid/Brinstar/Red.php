@@ -90,7 +90,7 @@ class Red extends Region {
                 && $items->canOpenRedDoors()
                 && ($items->has('Grapple') || $items->has('SpaceJump')
                 || ($items->canIbj() && $items->has('Varia') && ($items->has('Ice') && $items->hasEnergyReserves(5) || ($items->has('HiJump') && $items->hasEnergyReserves(4))))
-                || ($items->canCrystalFlash() && ($items->has('Ice') || $items->has('HiJump')) && $items->hasEnergyReserves(1) && $items->canIbj())));
+                || ($items->canCrystalFlash() && ($items->has('Ice') || $items->has('HiJump')) && $items->hasEnergyReserves(1) && $items->canIbj()));
 		});
         $this->locations["Power Bomb (red Brinstar sidehopper room)"]->setRequirements(function($location, $items) {
             return $items->canUsePowerBombs() && $items->has('Super');

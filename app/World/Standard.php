@@ -70,7 +70,7 @@ class Standard extends World {
 			'Outer Maridia' => new Region\Standard\SuperMetroid\Maridia\Outer($this),
 			'Inner Maridia' => new Region\Standard\SuperMetroid\Maridia\Inner($this),
 
-			'Tourian' => new Region\Standard\SuperMetroid\Tourian($this),
+			'Tourian' => new Region\Standard\SuperMetroid\Tourian\Tourian($this),
 		];
 
 		parent::__construct($difficulty, $logic, $goal, $variation);

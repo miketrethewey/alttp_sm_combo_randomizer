@@ -1,12 +1,12 @@
 {
-    "name": "sporchia/alttp_php_randmizer",
-    "description": "PHP based Randomizer for ALttP",
+    "name": "tewtal/alttp_sm_combo_randomizer",
+    "description": "PHP based Randomizer for ALttP/SM Crossover",
     "type": "project",
     "license": "MIT",
     "authors": [
         {
-            "name": "veetorp",
-            "email": "veetor+alttp@gmail.com"
+            "name": "tewtal",
+            "email": "internet@email.com"
         }
     ],
     "minimum-stability": "dev",

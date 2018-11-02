@@ -110,7 +110,7 @@ class Pink extends Region {
         $this->can_enter = function($locations, $items) {
 			return ($items->canOpenRedDoors() && ($items->canDestroyBombWalls() || $items->has('SpeedBooster')))
 				|| $items->canUsePowerBombs()
-				|| ($items->canAccessNorfairPortal() && $items->has('Morph') && ($items->canOpenRedDoors() || $items->has('Wave')) && ($items->has('Ice') || $items->has('HiJump')) || $items->canFlySM()));
+				|| ($items->canAccessNorfairPortal() && $items->has('Morph') && ($items->canOpenRedDoors() || $items->has('Wave')) && ($items->has('Ice') || $items->has('HiJump')) || $items->canFlySM());
 		};
 		return $this;
 	}
@@ -134,7 +134,8 @@ class Pink extends Region {
 			return $items->has('Morph') && ($items->has('PowerBomb') || $items->has('Super') || $items->canAccessNorfairPortal());
 		});
         $this->locations["Energy Tank, Waterway"]->setRequirements(function($location, $items) {
-			return $items->canUsePowerBombs() && $items->canOpenRedDoors() && $items->has('SpeedBooster') && ($items->hasEnergyReserves(1) || $items->has('Gravity'));
+			return $items->canUsePowerBombs() && $items->canOpenRedDoors() && $items->has('SpeedBooster') && $items->has('Gravity');
+			// originally this had a Speedbooster OR Gravity, cause it was technically possible to reach the tank with a spark. It's nearly frame-perfect though, so the spark has been removed from consideration for this tier of logic.
 		});
         $this->locations["Energy Tank, Brinstar Gate"]->setRequirements(function($location, $items) {
 			return $items->canUsePowerBombs() && $items->has('Wave') && $items->hasEnergyReserves(1);

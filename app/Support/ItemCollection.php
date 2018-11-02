@@ -916,23 +916,6 @@ class ItemCollection extends Collection {
 	{
 		return $this->has('Gravity');
 	}
-	public function canEnterAndLeaveGauntlet()
-	{
-		switch($this->world->getSMLogic())
-		{
-			case 'Casual':
-				return ($this->canMorph() && ($this->canFlySM() || $this->canDashSM()))
-					&& ($this->canIbj()
-						|| ($this->canUsePowerBombs() && $this->has('PowerBomb', 2))
-						|| $this->has('ScrewAttack'));
-			case 'Normal':
-			case 'Tournament':
-			default:
-				return ($this->canMorph() && ($this->canUseMorphBombs() || $this->has('PowerBomb', 2)))
-					 || $this->has('ScrewAttack')
-					 || ($this->canDashSM() && $this->canUsePowerBombs() && $this->hasEnergyReserves(2));
-		}
-	}
 	public function canPassBombPassages()
 	{
 		return $this->canUsePowerBombs() || $this->canIbj();

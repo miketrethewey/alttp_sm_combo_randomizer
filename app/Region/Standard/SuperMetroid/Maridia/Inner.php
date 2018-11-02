@@ -185,7 +185,7 @@ class Inner extends Region {
             return $items->canDefeatDraygon();
 		});
         $this->can_enter = function($locations, $items) {
-            return $this->world->getRegion('Outer Maridia')->canEnter($locations, $items) && $this->has('Grapple')
+            return $this->world->getRegion('Outer Maridia')->canEnter($locations, $items) && $this->has('Grapple');
         };
 		$this->can_complete = function($locations, $items) {
 			return ($this->canEnter($locations, $items) && $items->canDefeatBotwoon() && $items->canDefeatDraygon());
