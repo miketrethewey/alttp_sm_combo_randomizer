@@ -1126,18 +1126,31 @@ class Rom {
 				$byte = 0x24;
 				$file_byte = 0x05;
 		}
-		$this->write(0x6FA1E, pack('C*', $byte));
-		$this->write(0x6FA20, pack('C*', $byte));
-		$this->write(0x6FA22, pack('C*', $byte));
-		$this->write(0x6FA24, pack('C*', $byte));
-		$this->write(0x6FA26, pack('C*', $byte));
-		$this->write(0x6FA28, pack('C*', $byte));
-		$this->write(0x6FA2A, pack('C*', $byte));
-		$this->write(0x6FA2C, pack('C*', $byte));
-		$this->write(0x6FA2E, pack('C*', $byte));
-		$this->write(0x6FA30, pack('C*', $byte));
+//		$this->write(0x6FA1E, pack('C*', $byte));  // this is the location in the LttP Randomizer
+//		$this->write(0x6FA20, pack('C*', $byte));
+//		$this->write(0x6FA22, pack('C*', $byte));
+//		$this->write(0x6FA24, pack('C*', $byte));
+//		$this->write(0x6FA26, pack('C*', $byte));
+//		$this->write(0x6FA28, pack('C*', $byte));
+//		$this->write(0x6FA2A, pack('C*', $byte));
+//		$this->write(0x6FA2C, pack('C*', $byte));
+//		$this->write(0x6FA2E, pack('C*', $byte));
+//		$this->write(0x6FA30, pack('C*', $byte));
+//
+//		$this->write(0x65561, pack('C*', $file_byte));
+		
+		$this->write(0x4DFA1E, pack('C*', $byte));  // this is the location in the Crossover Randomizer
+		$this->write(0x4DFA20, pack('C*', $byte));
+		$this->write(0x4DFA22, pack('C*', $byte));
+		$this->write(0x4DFA24, pack('C*', $byte));
+		$this->write(0x4DFA26, pack('C*', $byte));
+		$this->write(0x4DFA28, pack('C*', $byte));
+		$this->write(0x4DFA2A, pack('C*', $byte));
+		$this->write(0x4DFA2C, pack('C*', $byte));
+		$this->write(0x4DFA2E, pack('C*', $byte));
+		$this->write(0x4DFA30, pack('C*', $byte));
 
-		$this->write(0x65561, pack('C*', $file_byte));
+		$this->write(0x4CD561, pack('C*', $file_byte));
 
 		return $this;
 	}
@@ -2744,8 +2757,8 @@ class Rom {
 
 		$this->text->setString('sign_path_to_death_mountain', "? Bumper Cave\nYou need Cape and Mirror, but not Hookshot");
 		$this->text->setString('sign_bumper_cave', "Cave to lost, old man.\nGood luck.");
-		$this->text->setString('sign_east_of_bomb_shop', "\n? Your House");
-		$this->text->setString('sign_east_of_links_house', "\n? Bomb Shoppe");
+		$this->text->setString('sign_east_of_bomb_shop', "\n?? Your House");
+		$this->text->setString('sign_east_of_links_house', "\n?? Bomb Shoppe");
 		$this->text->setString('kiki_leaving_screen', "{NOTEXT}", false);
 		$this->text->setString('dark_sanctuary', "{NOTEXT}", false);
 		$this->text->setString('dark_sanctuary_yes', "{NOTEXT}", false);

@@ -147,17 +147,17 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 			return this.parseZsprGfx(spr);
 		}
 		return new Promise(function(resolve, reject) {
-			for (var i = 0; i < 0x7000; i++) {
-				u_array[0x80000 + i] = spr[i];
-			}
-			for (var i = 0; i < 120; i++) {
-				u_array[0xDD308 + i] = spr[0x7000 + i];
-			}
-			// gloves color
-			u_array[0xDEDF5] = spr[0x7036];
-			u_array[0xDEDF6] = spr[0x7037];
-			u_array[0xDEDF7] = spr[0x7054];
-			u_array[0xDEDF8] = spr[0x7055];
+  			for (var i = 0; i < 0x7000; i++) {
+ 				u_array[0x508000 + i] = spr[i];
+  			}
+  			for (var i = 0; i < 120; i++) {
+ 				u_array[0x5BDD308 + i] = spr[0x7000 + i];
+  			}
+  			// gloves color
+ 			u_array[0x5BDEDF5] = spr[0x7036];
+ 			u_array[0x5BDEDF6] = spr[0x7037];
+ 			u_array[0x5BDEDF7] = spr[0x7054];
+ 			u_array[0x5BDEDF8] = spr[0x7055];
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
@@ -169,15 +169,17 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 			var palette_offset = zspr[18] << 24 | zspr[17] << 16 | zspr[16] << 8 | zspr[15];
 			// GFX
 			for (var i = 0; i < 0x7000; i++) {
-				u_array[0x80000 + i] = zspr[gfx_offset + i];
+				u_array[0x508000 + i] = zspr[gfx_offset + i];  // this is the location in the combo randomizer
 			}
 			// Palettes
 			for (var i = 0; i < 120; i++) {
-				u_array[0xDD308 + i] = zspr[palette_offset + i];
+ 				// 	u_array[0xDD308 + i] = zspr[palette_offset + i];  // this is the location in the LttP randomizer
+ 				u_array[0x5BD308 + i] = zspr[palette_offset + i];  // this is the location in the combo randomizer
 			}
 			// Gloves
 			for (var i = 0; i < 4; ++i) {
-				u_array[0xDEDF5 + i] = zspr[palette_offset + 120 + i];
+ 				// u_array[0xDEDF5 + i] = zspr[palette_offset + 120 + i];  // this is the location in the LttP randomizer
+ 				u_array[0x5BDEDF5 + i] = zspr[palette_offset + 120 + i];  // this is the location in the combo randomizer
 			}
 			resolve(this);
 		}.bind(this));
@@ -247,17 +249,28 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 					byte = 0x24;
 					file_byte = 0x05;
 			}
-			this.write(0x6FA1E, byte);
-			this.write(0x6FA20, byte);
-			this.write(0x6FA22, byte);
-			this.write(0x6FA24, byte);
-			this.write(0x6FA26, byte);
-			this.write(0x6FA28, byte);
-			this.write(0x6FA2A, byte);
-			this.write(0x6FA2C, byte);
-			this.write(0x6FA2E, byte);
-			this.write(0x6FA30, byte);
-			this.write(0x65561, file_byte);
+//			this.write(0x6FA1E, byte);  // locations in LttP Randomizer
+//			this.write(0x6FA20, byte);
+//			this.write(0x6FA22, byte);
+//			this.write(0x6FA24, byte);
+//			this.write(0x6FA26, byte);
+//			this.write(0x6FA28, byte);
+//			this.write(0x6FA2A, byte);
+//			this.write(0x6FA2C, byte);
+//			this.write(0x6FA2E, byte);
+//			this.write(0x6FA30, byte);
+//			this.write(0x65561, file_byte);
+			this.write(0x4DFA1E, byte);  // locations in Crossover Randomizer
+			this.write(0x4DFA20, byte);
+			this.write(0x4DFA22, byte);
+			this.write(0x4DFA24, byte);
+			this.write(0x4DFA26, byte);
+			this.write(0x4DFA28, byte);
+			this.write(0x4DFA2A, byte);
+			this.write(0x4DFA2C, byte);
+			this.write(0x4DFA2E, byte);
+			this.write(0x4DFA30, byte);
+			this.write(0x4CD561, file_byte);
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
@@ -272,6 +285,14 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 				case 'double': sbyte = 0x10; break;
 			}
 			this.write(0x180033, sbyte);
+			resolve(this);
+		}.bind(this));
+	}.bind(this);
+	
+	this.setSamusHealthAlarm = function(alarm) {
+		return new Promise(function(resolve, reject) {
+			this.write(0x10EA85, alarm ? 0x60 : 0x30);  // set the code to RTS if "alarm" is set, ie non-zero. Yes (first selection, 0) will be the default option. No (second selection, 1) will be the other option
+			this.write(0x10E6D5, alarm ? 0x60 : 0x30);  // set the code to RTS if "alarm" is set, ie non-zero. Yes (first selection, 0) will be the default option. No (second selection, 1) will be the other option
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
