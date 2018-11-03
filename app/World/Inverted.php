@@ -47,7 +47,7 @@ class Inverted extends World {
 			'Ganons Tower' => new Region\Inverted\GanonsTower($this),
 			'Medallions' => new Region\Standard\Medallions($this),
 			'Fountains' => new Region\Standard\Fountains($this),
-			
+
 			'Central Crateria' => new Region\Standard\SuperMetroid\Crateria\Central($this),
 			'West Crateria' => new Region\Standard\SuperMetroid\Crateria\West($this),
 			'East Crateria' => new Region\Standard\SuperMetroid\Crateria\East($this),
@@ -70,7 +70,7 @@ class Inverted extends World {
 			'Outer Maridia' => new Region\Standard\SuperMetroid\Maridia\Outer($this),
 			'Inner Maridia' => new Region\Standard\SuperMetroid\Maridia\Inner($this),
 
-			'Tourian' => new Region\Standard\SuperMetroid\Tourian($this),
+			'Tourian' => new Region\Standard\SuperMetroid\Tourian\Tourian($this),
 		];
 
 		parent::__construct($difficulty, $this->logic, $goal, $variation);

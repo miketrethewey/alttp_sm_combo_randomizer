@@ -14,6 +14,7 @@ class Randomizer {
 	 * one knows that if they got the same seed, items will probably not be in the same locations.
 	 */
 	const LOGIC = 30;
+	const SM_LOGIC = 11;
 	protected $seed;
 	protected $world;
 	protected $difficulty;
@@ -75,7 +76,7 @@ class Randomizer {
 	public function getLogic() {
 		switch ($this->logic) {
 			case 'None': return 'alttp-none-v' . static::LOGIC;
-			case 'NoMajorGlitches': return 'alttp-no-glitches-v' . static::LOGIC;
+			case 'NoGlitches': return 'alttp-no-glitches-v' . static::LOGIC;
 			case 'OverworldGlitches': return 'alttp-overworld-glitches-v' . static::LOGIC;
 			case 'MajorGlitches': return 'alttp-major-glitches-v' . static::LOGIC;
 		}
@@ -83,11 +84,12 @@ class Randomizer {
 	}
 	public function getSMLogic() {
 		switch ($this->sm_logic) {
-			case 'None': return 'sm-none';
-			case 'Tournament': return 'sm-hard';
-			case 'Casual': return 'sm-normal';
+			case 'None': return 'sm-none-v' . static::SM_LOGIC;
+			case 'Tournament': return 'sm-high-v' . static::SM_LOGIC;
+			case 'Normal': return 'sm-mid-v' . static::SM_LOGIC;
+			case 'Casual': return 'sm-low-v' . static::SM_LOGIC;
 		}
-		return 'sm-unknown';
+		return 'sm-unknown-v' . static::SM_LOGIC;
 	}
 
 	/**

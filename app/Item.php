@@ -384,11 +384,11 @@ class Item {
 	 * @return array
 	 */
 	public function getVisibleBytes() {
-		if($this->visiblePlm == null)
+		if($this->getTarget()->visiblePlm == null)
 		{
-			echo("Null Visible PLM" . $this->getName() . "\n");
+			echo("Null Visible PLM: " . $this->getNiceName() . " (" . $this->getName() . ')' . "\n");
 		}
-		$bytes = [$this->visiblePlm & 0xFF, ($this->visiblePlm >> 8) & 0xFF]; 
+		$bytes = [$this->getTarget()->visiblePlm & 0xFF, ($this->getTarget()->visiblePlm >> 8) & 0xFF];
 		return $bytes;
 	}
 
@@ -398,12 +398,12 @@ class Item {
 	 * @return array
 	 */
 	public function getHiddenBytes() {
-		if($this->hiddenPlm == null)
+		if($this->getTarget()->hiddenPlm == null)
 		{
-			echo("Null Hidden PLM" . $this->getName() . "\n");
+			echo("Null Hidden PLM: " . $this->getNiceName() . " (" . $this->getName() . ')' . "\n");
 		}
 
-		return [$this->hiddenPlm & 0xFF, ($this->hiddenPlm >> 8) & 0xFF];
+		return [$this->getTarget()->hiddenPlm & 0xFF, ($this->getTarget()->hiddenPlm >> 8) & 0xFF];
 	}
 
     /**
@@ -412,13 +412,13 @@ class Item {
 	 * @return array
 	 */
 	public function getChozoBytes() {
-		if($this->chozoPlm == null)
+		if($this->getTarget()->chozoPlm == null)
 		{
-			echo("Null Chozo PLM" . $this->getName() . "\n");
+			echo("Null Chozo PLM: " . $this->getNiceName() . " (" . $this->getName() . ')' . "\n");
 		}
-		return [$this->chozoPlm & 0xFF, ($this->chozoPlm >> 8) & 0xFF];
+		return [$this->getTarget()->chozoPlm & 0xFF, ($this->getTarget()->chozoPlm >> 8) & 0xFF];
 	}
-	
+
 	/**
 	 * Get the bytes to write
 	 *
