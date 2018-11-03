@@ -200,16 +200,16 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 		}
 		return new Promise(function(resolve, reject) {
   			for (var i = 0; i < 0x7000; i++) {
- 				u_array[0x80000 + i] = spr[i];
+ 				this.write(0x80000 + i, spr[i]);
   			}
   			for (var i = 0; i < 120; i++) {
- 				u_array[0xDD308 + i] = spr[0x7000 + i];
+ 				this.write(0xDD308 + i, spr[0x7000 + i]);
   			}
   			// gloves color
- 			u_array[0xDEDF5] = spr[0x7036];
- 			u_array[0xDEDF6] = spr[0x7037];
- 			u_array[0xDEDF7] = spr[0x7054];
- 			u_array[0xDEDF8] = spr[0x7055];
+ 			this.write(0xDEDF5, spr[0x7036]);
+ 			this.write(0xDEDF6, spr[0x7037]);
+ 			this.write(0xDEDF7, spr[0x7054]);
+ 			this.write(0xDEDF8, spr[0x7055]);
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
@@ -221,15 +221,15 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 			var palette_offset = zspr[18] << 24 | zspr[17] << 16 | zspr[16] << 8 | zspr[15];
 			// GFX
 			for (var i = 0; i < 0x7000; i++) {
-				u_array[0x80000 + i] = zspr[gfx_offset + i];
+				this.write(0x80000 + i, zspr[gfx_offset + i]);
 			}
 			// Palettes
 			for (var i = 0; i < 120; i++) {
- 				u_array[0xDD308 + i] = zspr[palette_offset + i];  // this is the location in the LttP randomizer
+ 				this.write(0xDD308 + i, zspr[palette_offset + i]);
 			}
 			// Gloves
 			for (var i = 0; i < 4; ++i) {
- 				u_array[0xDEDF5 + i] = zspr[palette_offset + 120 + i];  // this is the location in the LttP randomizer
+ 				this.write(0xDEDF5 + i, zspr[palette_offset + 120 + i]);
 			}
 			resolve(this);
 		}.bind(this));
@@ -246,7 +246,7 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 		return new Promise(function(resolve, reject) {
 			for (volume in music) {
 				for (var i = 0; i < music[volume].length; i++) {
-					u_array[music[volume][i]] = enable ? volume : 0;
+					this.write(music[volume][i], enable ? volume : 0);
 				}
 			}
 			resolve(this);
