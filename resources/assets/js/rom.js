@@ -111,7 +111,59 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 		return original_data;
 	};
 
-	this.write = function(seek, bytes) {
+	this.getComboOffset = function(input) {
+		let offset = parseInt(input,16).toString(16);
+		let output = "";
+
+		if(parseInt(offset,16) < 0x170000)
+		{
+			// LoROM -> HiROM + ExHiROM
+			offset = 0x400000 + (parseInt(offset,16) + (0x8000 * (Math.floor(parseInt(offset,16) / 0x8000) + 1)));
+		}
+		else if((parseInt(offset,16) & 0xff0000) == 0x180000)
+		{
+			// ExHiROM Bank 40
+			offset = 0x400000 + (parseInt(offset,16) & 0x00ffff);
+		}
+		else if(parseInt(offset,16) == 0x178000)
+		{
+			// Repoint RNG Block
+			offset = 0x420000;
+		}
+		else if((parseInt(offset,16) & 0xff0000) == 0xf70000)
+		{
+			// SM Items
+			offset = 0xF0000 + (parseInt(offset,16) & 0x00ffff);
+		}
+		else if((parseInt(offset,16) & 0xff0000) == 0xff0000)
+		{
+			// SM ExHiROM Header
+			offset = (parseInt(offset,16) & 0x00ffff);
+		}
+		else
+		{
+			output += "Unmapped ROM Access: " + input.toString(16).toUpperCase() + "\n";
+			output += "Write to unmapped location: " + offset.toString(16).toUpperCase() + "\n";
+			console.log(output);
+			return 0;
+		}
+
+		if(offset > 0x600000)
+		{
+			output += "Out-of-bounds ROM Access: " + input.toString(16).toUpperCase() + "\n";
+			output += "Write to invalid location: " + offset.toString(16).toUpperCase() + "\n";
+			console.log(output);
+			return 0;
+		}
+
+		return offset;
+	};
+
+	this.write = function(seek, bytes, combo = true) {
+		if(combo !== false) {
+			seek = this.getComboOffset(seek);
+		}
+
 		if (!Array.isArray(bytes)) {
 			u_array[seek] = bytes;
 			return;
@@ -148,16 +200,16 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 		}
 		return new Promise(function(resolve, reject) {
   			for (var i = 0; i < 0x7000; i++) {
- 				u_array[0x508000 + i] = spr[i];
+ 				u_array[0x80000 + i] = spr[i];
   			}
   			for (var i = 0; i < 120; i++) {
- 				u_array[0x5BDD308 + i] = spr[0x7000 + i];
+ 				u_array[0xDD308 + i] = spr[0x7000 + i];
   			}
   			// gloves color
- 			u_array[0x5BDEDF5] = spr[0x7036];
- 			u_array[0x5BDEDF6] = spr[0x7037];
- 			u_array[0x5BDEDF7] = spr[0x7054];
- 			u_array[0x5BDEDF8] = spr[0x7055];
+ 			u_array[0xDEDF5] = spr[0x7036];
+ 			u_array[0xDEDF6] = spr[0x7037];
+ 			u_array[0xDEDF7] = spr[0x7054];
+ 			u_array[0xDEDF8] = spr[0x7055];
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
@@ -169,17 +221,15 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 			var palette_offset = zspr[18] << 24 | zspr[17] << 16 | zspr[16] << 8 | zspr[15];
 			// GFX
 			for (var i = 0; i < 0x7000; i++) {
-				u_array[0x508000 + i] = zspr[gfx_offset + i];  // this is the location in the combo randomizer
+				u_array[0x80000 + i] = zspr[gfx_offset + i];
 			}
 			// Palettes
 			for (var i = 0; i < 120; i++) {
- 				// 	u_array[0xDD308 + i] = zspr[palette_offset + i];  // this is the location in the LttP randomizer
- 				u_array[0x5BD308 + i] = zspr[palette_offset + i];  // this is the location in the combo randomizer
+ 				u_array[0xDD308 + i] = zspr[palette_offset + i];  // this is the location in the LttP randomizer
 			}
 			// Gloves
 			for (var i = 0; i < 4; ++i) {
- 				// u_array[0xDEDF5 + i] = zspr[palette_offset + 120 + i];  // this is the location in the LttP randomizer
- 				u_array[0x5BDEDF5 + i] = zspr[palette_offset + 120 + i];  // this is the location in the combo randomizer
+ 				u_array[0xDEDF5 + i] = zspr[palette_offset + 120 + i];  // this is the location in the LttP randomizer
 			}
 			resolve(this);
 		}.bind(this));
@@ -249,28 +299,17 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 					byte = 0x24;
 					file_byte = 0x05;
 			}
-//			this.write(0x6FA1E, byte);  // locations in LttP Randomizer
-//			this.write(0x6FA20, byte);
-//			this.write(0x6FA22, byte);
-//			this.write(0x6FA24, byte);
-//			this.write(0x6FA26, byte);
-//			this.write(0x6FA28, byte);
-//			this.write(0x6FA2A, byte);
-//			this.write(0x6FA2C, byte);
-//			this.write(0x6FA2E, byte);
-//			this.write(0x6FA30, byte);
-//			this.write(0x65561, file_byte);
-			this.write(0x4DFA1E, byte);  // locations in Crossover Randomizer
-			this.write(0x4DFA20, byte);
-			this.write(0x4DFA22, byte);
-			this.write(0x4DFA24, byte);
-			this.write(0x4DFA26, byte);
-			this.write(0x4DFA28, byte);
-			this.write(0x4DFA2A, byte);
-			this.write(0x4DFA2C, byte);
-			this.write(0x4DFA2E, byte);
-			this.write(0x4DFA30, byte);
-			this.write(0x4CD561, file_byte);
+			this.write(0x6FA1E, byte);
+			this.write(0x6FA20, byte);
+			this.write(0x6FA22, byte);
+			this.write(0x6FA24, byte);
+			this.write(0x6FA26, byte);
+			this.write(0x6FA28, byte);
+			this.write(0x6FA2A, byte);
+			this.write(0x6FA2C, byte);
+			this.write(0x6FA2E, byte);
+			this.write(0x6FA30, byte);
+			this.write(0x65561, file_byte);
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
@@ -288,11 +327,11 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
-	
+
 	this.setSamusHealthAlarm = function(alarm) {
 		return new Promise(function(resolve, reject) {
-			this.write(0x10EA85, alarm ? 0x60 : 0x30);  // set the code to RTS if "alarm" is set, ie non-zero. Yes (first selection, 0) will be the default option. No (second selection, 1) will be the other option
-			this.write(0x10E6D5, alarm ? 0x60 : 0x30);  // set the code to RTS if "alarm" is set, ie non-zero. Yes (first selection, 0) will be the default option. No (second selection, 1) will be the other option
+			this.write(0x10EA85, alarm ? 0x60 : 0x30, false);  // set the code to RTS if "alarm" is set, ie non-zero. Yes (first selection, 0) will be the default option. No (second selection, 1) will be the other option
+			this.write(0x10E6D5, alarm ? 0x60 : 0x30, false);  // set the code to RTS if "alarm" is set, ie non-zero. Yes (first selection, 0) will be the default option. No (second selection, 1) will be the other option
 			resolve(this);
 		}.bind(this));
 	}.bind(this);
@@ -368,11 +407,11 @@ var ROM = (function(blob, loaded_callback, error_callback) {
 		return this.name
 			|| 'SMALttP - '
 			+ this.sm_logic
-			+ '_' + this.logic
-			+ '_' + this.difficulty
-			+ '-' + this.mode
-			+ (this.weapons ? '_swords-' + this.weapons : '')
 			+ (this.morph ? '_morph-' + this.morph : '')
+			+ '_' + this.logic
+			+ '-' + this.difficulty
+			+ (this.weapons ? '_swords-' + this.weapons : '')
+			+ '_' + this.mode
 			+ '-' + this.goal
 			+ (this.variation == 'none' ? '' : '_' + this.variation)
 			+ '_' + this.hash
