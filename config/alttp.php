@@ -571,6 +571,7 @@ return [
 		],
 		'rom' => [
 			'HardMode' => 0,
+			'genericKeys' => false,
 		],
 		'spoil' => [
 			'BootsLocation' => false,
