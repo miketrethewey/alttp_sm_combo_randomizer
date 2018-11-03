@@ -330,11 +330,14 @@ class Item {
 	 *
 	 * @return void
 	 */
-	public function __construct($name, $nice_name, $bytes, $address = null) {
+	public function __construct($name, $nice_name, $bytes, $address = null, $visiblePlm = null, $chozoPlm = null, $hiddenPlm = null) {
 		$this->name = $name;
 		$this->nice_name = $nice_name;
 		$this->bytes = (array) $bytes;
 		$this->address = (array) $address;
+		$this->visiblePlm = $visiblePlm;
+		$this->chozoPlm = $chozoPlm;
+		$this->hiddenPlm = $hiddenPlm;
 	}
 
 	/**
@@ -383,7 +386,7 @@ class Item {
 	public function getVisibleBytes() {
 		if($this->visiblePlm == null)
 		{
-			echo("Null Visible PLM");
+			echo("Null Visible PLM" . $this->getName() . "\n");
 		}
 		$bytes = [$this->visiblePlm & 0xFF, ($this->visiblePlm >> 8) & 0xFF]; 
 		return $bytes;
@@ -397,7 +400,7 @@ class Item {
 	public function getHiddenBytes() {
 		if($this->hiddenPlm == null)
 		{
-			echo("Null Hidden PLM");
+			echo("Null Hidden PLM" . $this->getName() . "\n");
 		}
 
 		return [$this->hiddenPlm & 0xFF, ($this->hiddenPlm >> 8) & 0xFF];
@@ -411,7 +414,7 @@ class Item {
 	public function getChozoBytes() {
 		if($this->chozoPlm == null)
 		{
-			echo("Null Chozo PLM");
+			echo("Null Chozo PLM" . $this->getName() . "\n");
 		}
 		return [$this->chozoPlm & 0xFF, ($this->chozoPlm >> 8) & 0xFF];
 	}

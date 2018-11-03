@@ -35,7 +35,7 @@ abstract class World {
 	 *
 	 * @return void
 	 */
-	public function __construct($difficulty = 'normal', $logic = 'NoGlitches', $sm_logic = 'Normal', $goal = 'ganon', $variation = 'none') {
+	public function __construct($difficulty = 'normal', $logic = 'NoGlitches', $sm_logic = 'Tournament', $goal = 'ganon', $variation = 'none') {
 		$this->difficulty = $difficulty;
 		$this->variation = $variation;
 		$this->logic = $logic;
@@ -73,7 +73,7 @@ abstract class World {
 		};
 	}
 
-	static public function factory(string $type = null, $difficulty = 'normal', $logic = 'NoGlitches', $sm_logic = 'Normal', $goal = 'ganon', $variation = 'none') {
+	static public function factory(string $type = null, $difficulty = 'normal', $logic = 'NoGlitches', $sm_logic = 'Tournament', $goal = 'ganon', $variation = 'none') {
 		switch ($type) {
 			case 'open':
 				return new World\Open($difficulty, $logic, $sm_logic, $goal, $variation);
