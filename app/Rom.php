@@ -699,14 +699,20 @@ class Rom {
 		$equipment[0x362] = $equipment[0x360] = $starting_rupees & 0xFF;
 		$equipment[0x363] = $equipment[0x361] = $starting_rupees >> 8;
 
-		$this->write(0x183000, pack('C*', ...$equipment));
+		$this->write(0x5E0361, pack('C*', ...$equipment), true, false); // write to the combomizer's copy of the SRAM
 		// For file select screen
 		$this->write(0x271A6, pack('C*', ...array_slice($equipment, 0, 60)));
 		$this->setMaxArrows($starting_arrow_capacity);
 		$this->setMaxBombs($starting_bomb_capacity);
 
 		if (config('alttp.mode.weapons') != 'swordless' && $equipment[0x359]) {
-			$this->write(0x180043, pack('C*', $equipment[0x359])); // write starting sword
+			$this->write(0x5E0064, pack('C*', $equipment[0x359]), true, false); // write combomizer starting sword
+		} else {
+		}
+
+		if(config('alttp.mode.weapons') == 'swordless') {
+			//Fix later - should be written in setSwordlessMode(), but it currently would get overwritten
+			$this->write(0x5E037A, pach('C*', 0xFF), true, false); // swordless gets "smithy" sword
 		}
 
 		return $this;
@@ -1138,7 +1144,7 @@ class Rom {
 //		$this->write(0x6FA30, pack('C*', $byte));
 //
 //		$this->write(0x65561, pack('C*', $file_byte));
-		
+
 		$this->write(0x4DFA1E, pack('C*', $byte));  // this is the location in the Crossover Randomizer
 		$this->write(0x4DFA20, pack('C*', $byte));
 		$this->write(0x4DFA22, pack('C*', $byte));
@@ -3229,11 +3235,14 @@ class Rom {
 	 * @param int $offset location in the ROM to begin writing
 	 * @param string $data data to write to the ROM
 	 * @param bool $log write this write to the log
+	 * @param bool $comboOffset use the combo offset based off the given offset
 	 *
 	 * @return $this
 	 */
-	public function write(int $offset, string $data, bool $log = true) : self {
-		$offset = $this->getComboOffset($offset);
+	public function write(int $offset, string $data, bool $log = true, bool $comboOffset = true) : self {
+		if($comboOffset) {
+			$offset = $this->getComboOffset($offset);
+		}
 
 		if ($log) {
 			$unpacked = array_values(unpack('C*', $data));

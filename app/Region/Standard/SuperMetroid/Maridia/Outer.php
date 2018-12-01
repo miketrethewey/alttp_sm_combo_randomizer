@@ -50,10 +50,10 @@ class Outer extends Region {
 	 */
 	public function initTournament() {
         $this->locations["Missile (green Maridia shinespark)"]->setRequirements(function($location, $items) {
-            return $items->has('Gravity') && $items->has('SpeedBooster');        
+            return $items->has('Gravity') && $items->has('SpeedBooster');
 		});
         $this->locations["Energy Tank, Mama turtle"]->setRequirements(function($location, $items) {
-            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple') || $items->canSpringBallJump();        
+            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple') || (($items->has('Gravity') || $items->has('HiJump')) && $items->canSpringBallJump());
 		});
 
         $this->can_enter = function($locations, $items) {
@@ -63,7 +63,7 @@ class Outer extends Region {
 				 || ($items->has('HiJump') && ($items->canSpringBallJump() || $items->has('Ice')))))
 			 || ($items->canAccessMaridiaPortal() && $items->has('Super'));
         };
-        
+
 		return $this;
 	}
 	/**
@@ -74,10 +74,10 @@ class Outer extends Region {
 	 */
 	public function initNormal() {
         $this->locations["Missile (green Maridia shinespark)"]->setRequirements(function($location, $items) {
-            return $items->has('Gravity') && $items->has('SpeedBooster');        
+            return $items->has('Gravity') && $items->has('SpeedBooster');
 		});
         $this->locations["Energy Tank, Mama turtle"]->setRequirements(function($location, $items) {
-            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');        
+            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');
 		});
 
         $this->can_enter = function($locations, $items) {
@@ -87,7 +87,7 @@ class Outer extends Region {
 				 || ($items->has('HiJump') && $items->has('Ice'))))
 			 || ($items->canAccessMaridiaPortal() && $items->has('Super'));
         };
-        
+
 		return $this;
 	}
 
@@ -102,7 +102,7 @@ class Outer extends Region {
             return $items->has('SpeedBooster') && $items->has('Super');
 		});
         $this->locations["Energy Tank, Mama turtle"]->setRequirements(function($location, $items) {
-            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');        
+            return $items->canFlySM() || $items->has('SpeedBooster') || $items->has('Grapple');
 		});
 
         $this->can_enter = function($locations, $items) {
@@ -111,7 +111,7 @@ class Outer extends Region {
 				|| ($items->canAccessMaridiaPortal() && $items->has('Super'))
                 && $items->has('Gravity'));
         };
-        
+
 		return $this;
 	}
 }

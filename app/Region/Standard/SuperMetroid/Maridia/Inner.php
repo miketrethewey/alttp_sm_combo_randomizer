@@ -108,7 +108,7 @@ class Inner extends Region {
         $this->locations["Spring Ball"]->setRequirements(function($location, $items) {
 			return $this->canUsePowerBombs()
 				&& ($this->has('Grapple') || ($this->has('Ice') && $this->has('Gravity'))
-				&& ($items->has('HiJump') && $items->canSpringBallJump()));
+				&& ($items->has('Ice') && $items->has('HiJump') && $items->canSpringBallJump()));
 		});
         $this->locations["Missile (Draygon)"]->setRequirements(function($location, $items) {
 			return $items->has('Super') && ($items->canDefeatBotwoon() || $this->canAccessMaridiaPortal());
@@ -123,7 +123,7 @@ class Inner extends Region {
         $this->can_enter = function($locations, $items) {
             return $this->world->getRegion('Outer Maridia')->canEnter($locations, $items);
         };
-		
+
 		$this->can_complete = function($locations, $items) {
 			return ($this->canEnter($locations, $items) && $items->canDefeatBotwoon() && $items->canDefeatDraygon());
 		};
@@ -170,7 +170,7 @@ class Inner extends Region {
             return $items->has('Super') && $items->has('Gravity') && $this->has('SpeedBooster');
 		});
         $this->locations["Spring Ball"]->setRequirements(function($location, $items) {
-			return $items->has('Super') && $items->has('Grapple') 
+			return $items->has('Super') && $items->has('Grapple')
 				&& $items->canUsePowerBombs()
 				&& (($items->has('Gravity') && ($items->canFlySM() || $items->has('HiJump')))
 				|| ($items->has('HiJump') && $items->has('SpaceJump')));
@@ -249,7 +249,7 @@ class Inner extends Region {
 				|| $items->canAccessMaridiaPortal())
                 && $items->has('Gravity');
         };
-		
+
 		$this->can_complete = function($locations, $items) {
 			return ($this->canEnter($locations, $items) && $items->canDefeatBotwoon() && $items->canDefeatDraygon());
 		};

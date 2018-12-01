@@ -82,14 +82,24 @@ class East extends Region {
         });
 
         $this->can_enter = function($locations, $items) {
-            return ((($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
-                && ($items->has('Super') && $items->has('Morph')))
+            return (
+                /* Norfair Main Street Access */
+                (($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
+                    && ($items->has('Super') && $items->has('Morph')))
                 || $items->canAccessNorfairPortal())
+
+                /* Hell Run and Green Door */
                 && $items->canHellRun()
-                && ($items->has('Super') && ($items->canFlySM() || $items->has('HiJump') || $items->canSpringBallJump() || ($items->has('Varia') && ($items->has('Ice') || $items->has('SpeedBooster'))))
-                 || ($items->has('SpeedBooster') && $items->canUsePowerBombs()));
+                && ($items->has('Super')
+
+                /* Cathedral Route */
+                && ($items->canFlySM() || $items->has('HiJump') || $items->has('SpeedBooster') || $items->canSpringBallJump() || ($items->has('Varia') && ($items->has('Ice') || $items->has('SpeedBooster'))))
+
+                /* Speedway Route */
+                || ($items->has('SpeedBooster') && $items->canUsePowerBombs())
+            )
         };
-        
+
 		return $this;
 	}
 
@@ -127,10 +137,10 @@ class East extends Region {
                 && $items->canHellRun() && ($items->has('Super') && ($items->canFlySM() || $items->has('HiJump') || ($items->has('Varia') && ($items->has('Ice') || $items->has('SpeedBooster'))))
                  || ($items->has('SpeedBooster') && $items->canUsePowerBombs()));
         };
-        
+
 		return $this;
 	}
-	
+
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Casual Mode
@@ -164,7 +174,7 @@ class East extends Region {
         $this->locations["Missile (Wave Beam)"]->setRequirements(function($location, $items) {
             return ($items->canFlySM() || ($items->has('Morph') && ($items->has('SpeedBooster') || $items->canPassBombPassages())) || $items->has('HiJump') || $items->has('Ice'));
         });
-        
+
         $this->can_enter = function($locations, $items) {
             return ((($items->canDestroyBombWalls() || $items->has('SpeedBooster'))
                 && ($items->has('Super') && $items->has('Morph')))
@@ -173,7 +183,7 @@ class East extends Region {
                 && $items->has('Super')
                 && ($items->canFlySM() || $items->has('HiJump') || $items->has('SpeedBooster'));
         };
-        
+
 		return $this;
 	}
 }

@@ -50,10 +50,10 @@ class West extends Region {
 		$this->locations["Missile (Gold Torizo)"]->setRequirements(function($location, $items) {
 			// a canFlySM check here is redundant, since with Space Jump you can fly, as is required to get this particular item
 			return $items->canUsePowerbombs() && $items->has('SpaceJump') && $items->heatProof()
-			&& ($items->has('HiJump') || $items->has('Gravity') || ($items->canAccessLowerNorfairPortal() && ($items->canSpringBallJump() || $items->has('SpeedBooster'))));
+			&& ($items->has('HiJump') || $items->has('Gravity') || ($items->canAccessLowerNorfairPortal() && ($items->canSpringBallJump() || $items->has('SpeedBooster')) && $items->has('Super')));
         });
         $this->locations["Super Missile (Gold Torizo)"]->setRequirements(function($location, $items) {
-			return $items->canDestroyBombWalls() && $items-hasEnergyReserves(6);
+			return $items->canDestroyBombWalls() && $items->heatProof() && ($items->has('Charge') || $items->has('Super'));
         });
         $this->locations["Screw Attack"]->setRequirements(function($location, $items) {
 			return $items->canDestroyBombWalls();
@@ -66,10 +66,10 @@ class West extends Region {
                 || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls());
                 // to follow the logic for this, Varia *can* be in Lower Norfair, but only if the game forces you to enter from the Misery Mire Swamp portal
         };
-        
+
 		return $this;
 	}
-	
+
 	/**
 	 * Initalize the requirements for Entry and Completetion of the Region as well as access to all Locations contained
 	 * within for Normal
@@ -94,7 +94,7 @@ class West extends Region {
                 || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls());
                 // to follow the logic for this, Varia *can* be in Lower Norfair, but only if the game forces you to enter from the Misery Mire Swamp portal
         };
-        
+
 		return $this;
 	}
 
@@ -109,7 +109,7 @@ class West extends Region {
 			return $items->canUsePowerbombs() && $items->has('SpaceJump') && $items->has('Super');
         });
         $this->locations["Super Missile (Gold Torizo)"]->setRequirements(function($location, $items) {
-			return $items->canDestroyBombWalls() 
+			return $items->canDestroyBombWalls() && ($items->has('Charge') || $items->has('Super'))
 				&& ($items->canAccessLowerNorfairPortal() || ($items->has('SpaceJump') && $items->canUsePowerBombs()));
         });
         $this->locations["Screw Attack"]->setRequirements(function($location, $items) {
@@ -121,9 +121,9 @@ class West extends Region {
 			    && (($this->world->getRegion('East Norfair')->canEnter($locations, $items)
                 && $items->canUsePowerBombs()
                 && ($items->has('Gravity') && $items->has('SpaceJump')))
-                || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls()));					
+                || ($items->canAccessLowerNorfairPortal() && $items->canDestroyBombWalls()));
         };
-        
+
 		return $this;
 	}
 }
